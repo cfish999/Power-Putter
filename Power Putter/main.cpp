@@ -4,8 +4,7 @@
 
 int main() 
 {
-    std::cout << "now it works" << std::endl;
-
+    
     return 0;
 }
 
