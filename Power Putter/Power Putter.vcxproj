@@ -130,10 +130,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="assetManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="assetManager.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stateMachine.h" />
   </ItemGroup>

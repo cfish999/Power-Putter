@@ -21,12 +21,18 @@
     <ClCompile Include="stateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="assetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="state.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assetManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
