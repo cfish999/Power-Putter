@@ -131,13 +131,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainMenuState.cpp" />
     <ClCompile Include="stateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h" />
+    <ClInclude Include="DEFINITIONS.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="gameState.h" />
     <ClInclude Include="inputManager.h" />
+    <ClInclude Include="mainMenuState.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stateMachine.h" />
   </ItemGroup>

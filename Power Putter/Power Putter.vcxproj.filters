@@ -27,6 +27,12 @@
     <ClCompile Include="inputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainMenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -39,6 +45,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="inputManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainMenuState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DEFINITIONS.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
