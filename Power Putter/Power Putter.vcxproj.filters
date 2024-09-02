@@ -36,6 +36,9 @@
     <ClCompile Include="gameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ball.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="DEFINITIONS.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ball.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

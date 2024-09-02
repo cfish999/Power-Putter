@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "state.h"
+#include "ball.h"
 #include "game.h"
 
 namespace Fish
@@ -23,6 +24,10 @@ namespace Fish
 
 		sf::Sprite _background;
 
+		// pointer to a ball object
+		Ball* ball;
+
 		int _gameState;
+		int _defaultSpeed = 10;
 	};
 }
