@@ -5,3 +5,6 @@
 
 // main menu screen
 #define MAIN_MENU_BACKGROUND "texture/background.jpg"
+#define PLAY_BUTTON "texture/play_button.png"
+
+
