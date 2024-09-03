@@ -8,29 +8,29 @@
 
 namespace Fish {
 
-	class Ball {
+	class Arrow {
 	public:
 
-		Ball(GameDataRef data);
+		Arrow(GameDataRef data);
 
 		void Draw();
-		void Update(float dt);
-		void Move(float angle);
+		void Update(float dt); 
 		const sf::Sprite& GetSprite() const;
+		float GetArrowAngle(sf::RenderWindow& window);
 
-		int _ballState;
+		int _arrowState;
 
 	private:
 
 		GameDataRef _data;
 
-		sf::Sprite _ballSprite;
-		
+		sf::Sprite _arrowSprite;
+
 		sf::Clock _clock;
 		sf::Clock _movementClock;
 
 		float _rotation;
-		float _slowdown = 1.0;
+		int _rotatingValue = 100;
 
 	};
 }

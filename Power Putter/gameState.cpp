@@ -2,6 +2,7 @@
 #include "gameState.h"
 #include "mainMenuState.h"
 #include "ball.h"
+#include "arrow.h"
 #include "DEFINITIONS.h"
 
 #include <iostream>
@@ -17,8 +18,10 @@ namespace Fish
 	{
 		
 		this->_data->assets.LoadTexture("Ball Sprite", BALL_FRAME_FILEPATH);
+		this->_data->assets.LoadTexture("Arrow Sprite", ARROW_FILEPATH);
 		
 		ball = new Ball(_data);
+		arrow = new Arrow(_data);
 
 
 		// at the minute we are reusing the background asset as we have not created a game screen background yet 
@@ -41,6 +44,8 @@ namespace Fish
 			if (_data->input.IsSpriteClicked(_background, sf::Mouse::Left, _data->window)) {
 				// The ball has been hit so should rotate and move now 
 				ball->_ballState = BALL_STATE_MOVING;
+				arrow->_arrowState = NOT_ROTATING;
+				arrowAngle = arrow->GetArrowAngle(_data->window);
 			}
 		}
 	}
@@ -48,7 +53,12 @@ namespace Fish
 	void GameState::Update(float dt)
 	{
 		ball->Update(dt);
-		ball->Move(_defaultSpeed);
+		arrow->Update(dt);
+
+		if (arrow->_arrowState == NOT_ROTATING) {
+			ball->Move(arrowAngle);
+		}
+
 	}
 
 	void GameState::Draw(float dt)
@@ -58,6 +68,7 @@ namespace Fish
 
 		this->_data->window.draw(this->_background);
 		ball->Draw();
+		arrow->Draw();
 
 		this->_data->window.display();
 	}

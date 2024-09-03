@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 #include "state.h"
 #include "ball.h"
+#include "arrow.h"
 #include "game.h"
 
 namespace Fish
@@ -26,6 +27,9 @@ namespace Fish
 
 		// pointer to a ball object
 		Ball* ball;
+		// pointer to arrow object
+		Arrow* arrow;
+		float arrowAngle;
 
 		int _gameState;
 		int _defaultSpeed = 10;

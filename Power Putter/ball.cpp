@@ -1,16 +1,15 @@
 #include "ball.h"
-#include <iostream>
+#include "DEFINITIONS.h"
+
 
 namespace Fish {
 
 	Ball::Ball(GameDataRef data) : _data(data) {
 
-		_animationIterator = 0;
+		// set the texture
+		_ballSprite.setTexture(this->_data->assets.GetTexture("Ball Sprite"));
 
-		_animationFrames.push_back(_data->assets.GetTexture("Ball Sprite"));
-
-		_ballSprite.setTexture(_animationFrames.at(_animationIterator));
-
+		// starting position of ball
 		_ballSprite.setPosition((_data->window.getSize().x / 4) - (_ballSprite.getGlobalBounds().width / 2),
 			(_data->window.getSize().y / 2) - (_ballSprite.getGlobalBounds().height / 2));
 
@@ -44,13 +43,18 @@ namespace Fish {
 
 	}
 
-	void Ball::Move(float speed)
+	void Ball::Move(float angle)
 	{
 
 		if (_ballState == BALL_STATE_MOVING) {
+			// set speed will be changed later when we have a power bar 
+			int speed = 5;
+			
+			// calculation to work out the directions it moves
+			float radians = 2 * PI * (angle / 360);
+			// it moves corresponding to the direction given and the slowdown of the natural terrain (will implement speed and different terrains soon)
+			_ballSprite.move(speed * cos(radians) * _slowdown, speed * sin(radians) * _slowdown);
 
-			// move corresponding to the speed given and the slowdown of the natural terrain 
-			_ballSprite.move(0.5 * speed * _slowdown, 0);
 			// slows down the ball over time 
 			_slowdown -= 0.01;
 		}
