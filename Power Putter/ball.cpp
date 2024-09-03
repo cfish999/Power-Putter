@@ -56,10 +56,7 @@ namespace Fish {
 			// slows down the ball over time 
 			_slowdown -= 0.01;
 		}
-		else {
-			// when it is no longer in the moving state the slowdown state gets reset 
-			_slowdown = 1.0;
-		}
+		
 
 		// when the ball has stopped moving set the state to still 
 		if (_slowdown < 0.0) {
@@ -68,7 +65,6 @@ namespace Fish {
 		}
 
 	}
-
 
 	const sf::Sprite& Ball::GetSprite() const
 	{

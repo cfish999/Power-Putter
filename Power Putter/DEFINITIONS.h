@@ -35,4 +35,8 @@
 
 #define POWER_BAR_DURATION 2.0f
 
+// target class
+#define GOLD_TARGET "texture/gold.png"
+#define SILVER_TARGET "texture/silver.png"
+#define BRONZE_TARGET "texture/bronze.png"
 

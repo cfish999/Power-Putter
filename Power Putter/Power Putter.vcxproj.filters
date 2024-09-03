@@ -45,6 +45,12 @@
     <ClCompile Include="power_bar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="target.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -78,6 +84,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="power_bar.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

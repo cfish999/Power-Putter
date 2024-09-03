@@ -4,6 +4,8 @@
 #include "ball.h"
 #include "arrow.h"
 #include "power_bar.h"
+#include "target.h"
+#include "collision.h"
 #include "DEFINITIONS.h"
 
 #include <iostream>
@@ -30,10 +32,16 @@ namespace Fish
 		this->_data->assets.LoadTexture("Power Bar 8", POWER_BAR_FRAME8);
 		this->_data->assets.LoadTexture("Power Bar 9", POWER_BAR_FRAME9);
 		this->_data->assets.LoadTexture("Power Bar 10", POWER_BAR_FRAME10);
+		this->_data->assets.LoadTexture("Gold Target", GOLD_TARGET);
+		this->_data->assets.LoadTexture("Silver Target", SILVER_TARGET);
+		this->_data->assets.LoadTexture("Bronze Target", BRONZE_TARGET);
+
 		
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
 		powerBar = new PowerBar(_data);
+		targets = new Target(_data);
+
 
 
 		// at the minute we are reusing the background asset as we have not created a game screen background yet 
@@ -81,6 +89,23 @@ namespace Fish
 			ball->Move(arrowAngle,powerBarSpeed);
 		}
 
+		if (ball->_ballState == BALL_STATE_STILL) {
+			
+			// must be ball then target for sprites to work 
+			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetGoldSprite())) {
+				std::cout << "gold medal" << std::endl;
+			}
+			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite())) {
+				std::cout << "silver medal" << std::endl;
+			}
+			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetBronzeSprite())) {
+				std::cout << "bronze medal" << std::endl;
+			}
+			else {
+				std::cout << "no medal!" << std::endl;
+			}
+		}
+
 	}
 
 	void GameState::Draw(float dt)
@@ -89,6 +114,7 @@ namespace Fish
 		this->_data->window.clear(sf::Color::Red);
 
 		this->_data->window.draw(this->_background);
+		targets->Draw();
 		arrow->Draw();
 		ball->Draw();
 		powerBar->Draw();
