@@ -43,12 +43,10 @@ namespace Fish {
 
 	}
 
-	void Ball::Move(float angle)
+	void Ball::Move(float angle,float speed)
 	{
 
 		if (_ballState == BALL_STATE_MOVING) {
-			// set speed will be changed later when we have a power bar 
-			int speed = 5;
 			
 			// calculation to work out the directions it moves
 			float radians = 2 * PI * (angle / 360);

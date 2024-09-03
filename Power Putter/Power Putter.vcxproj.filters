@@ -42,6 +42,9 @@
     <ClCompile Include="arrow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="power_bar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="arrow.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="power_bar.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

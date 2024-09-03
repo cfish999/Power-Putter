@@ -3,6 +3,7 @@
 #include "mainMenuState.h"
 #include "ball.h"
 #include "arrow.h"
+#include "power_bar.h"
 #include "DEFINITIONS.h"
 
 #include <iostream>
@@ -19,9 +20,20 @@ namespace Fish
 		
 		this->_data->assets.LoadTexture("Ball Sprite", BALL_FRAME_FILEPATH);
 		this->_data->assets.LoadTexture("Arrow Sprite", ARROW_FILEPATH);
+		this->_data->assets.LoadTexture("Power Bar 1", POWER_BAR_FRAME1);
+		this->_data->assets.LoadTexture("Power Bar 2", POWER_BAR_FRAME2);
+		this->_data->assets.LoadTexture("Power Bar 3", POWER_BAR_FRAME3);
+		this->_data->assets.LoadTexture("Power Bar 4", POWER_BAR_FRAME4);
+		this->_data->assets.LoadTexture("Power Bar 5", POWER_BAR_FRAME5);
+		this->_data->assets.LoadTexture("Power Bar 6", POWER_BAR_FRAME6);
+		this->_data->assets.LoadTexture("Power Bar 7", POWER_BAR_FRAME7);
+		this->_data->assets.LoadTexture("Power Bar 8", POWER_BAR_FRAME8);
+		this->_data->assets.LoadTexture("Power Bar 9", POWER_BAR_FRAME9);
+		this->_data->assets.LoadTexture("Power Bar 10", POWER_BAR_FRAME10);
 		
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
+		powerBar = new PowerBar(_data);
 
 
 		// at the minute we are reusing the background asset as we have not created a game screen background yet 
@@ -42,10 +54,18 @@ namespace Fish
 
 			// check when the background has been clicked 
 			if (_data->input.IsSpriteClicked(_background, sf::Mouse::Left, _data->window)) {
-				// The ball has been hit so should rotate and move now 
-				ball->_ballState = BALL_STATE_MOVING;
-				arrow->_arrowState = NOT_ROTATING;
-				arrowAngle = arrow->GetArrowAngle(_data->window);
+
+				// first click sets the direction of the ball
+				if (firstClick) {
+					arrow->_arrowState = NOT_ROTATING;
+					arrowAngle = arrow->GetArrowAngle(_data->window);
+					firstClick = false;
+			}	// second sets the speed of the ball
+				else {
+					arrow->_arrowState = SHOT;
+					ball->_ballState = BALL_STATE_MOVING;
+					powerBarSpeed = powerBar->GetSpeed();
+				}
 			}
 		}
 	}
@@ -54,9 +74,11 @@ namespace Fish
 	{
 		ball->Update(dt);
 		arrow->Update(dt);
+		powerBar->Animate(dt);
 
-		if (arrow->_arrowState == NOT_ROTATING) {
-			ball->Move(arrowAngle);
+		// moves the ball only when direction and power bar strength has been set
+		if (arrow->_arrowState == SHOT) {
+			ball->Move(arrowAngle,powerBarSpeed);
 		}
 
 	}
@@ -67,8 +89,9 @@ namespace Fish
 		this->_data->window.clear(sf::Color::Red);
 
 		this->_data->window.draw(this->_background);
-		ball->Draw();
 		arrow->Draw();
+		ball->Draw();
+		powerBar->Draw();
 
 		this->_data->window.display();
 	}

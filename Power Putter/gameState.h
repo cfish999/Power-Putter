@@ -5,6 +5,7 @@
 #include "state.h"
 #include "ball.h"
 #include "arrow.h"
+#include "power_bar.h"
 #include "game.h"
 
 namespace Fish
@@ -30,8 +31,12 @@ namespace Fish
 		// pointer to arrow object
 		Arrow* arrow;
 		float arrowAngle;
+		// pointer to power bar object
+		PowerBar* powerBar;
+		float powerBarSpeed;
 
 		int _gameState;
 		int _defaultSpeed = 10;
+		bool firstClick = true;
 	};
 }

@@ -10,7 +10,7 @@ namespace Fish {
 		_arrowSprite.setTexture(this->_data->assets.GetTexture("Arrow Sprite"));
 
 		// starting position of arrow
-		_arrowSprite.setPosition((_data->window.getSize().x / 4) - (_arrowSprite.getGlobalBounds().width / 2) + 110,
+		_arrowSprite.setPosition((_data->window.getSize().x / 4) - (_arrowSprite.getGlobalBounds().width / 2) + 90,
 			(_data->window.getSize().y / 2) - (_arrowSprite.getGlobalBounds().height / 2) - 40 );
 
 		// scales the sprite up
@@ -27,7 +27,7 @@ namespace Fish {
 	void Arrow::Draw() {
 
 		// arrow disappears once the ball has been shot 
-		if (ROTATING == _arrowState) {
+		if (SHOT != _arrowState) {
 			_data->window.draw(_arrowSprite);
 		}
 	}
@@ -51,6 +51,8 @@ namespace Fish {
 
 			_arrowSprite.setRotation(_rotation);
 		}		
+
+
 		
 	}
 

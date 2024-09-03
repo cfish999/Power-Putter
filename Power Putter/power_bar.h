@@ -8,29 +8,29 @@
 
 namespace Fish {
 
-	class Ball {
+	class PowerBar {
 	public:
 
-		Ball(GameDataRef data);
+		PowerBar(GameDataRef data);
 
 		void Draw();
-		void Update(float dt);
-		void Move(float angle, float speed);
+		void Animate(float dt);
+		float GetSpeed();
 		const sf::Sprite& GetSprite() const;
-
-		int _ballState;
 
 	private:
 
 		GameDataRef _data;
 
-		sf::Sprite _ballSprite;
-		
+		sf::Sprite _powerBarSprite;
+		std::vector<sf::Texture> _animationFrames;
+
+		unsigned int _animationIterator;
+		bool rising = true;
+		bool powerBarNeeded = true;
+
 		sf::Clock _clock;
 		sf::Clock _movementClock;
-
-		float _rotation;
-		float _slowdown = 1.0;
 
 	};
 }
