@@ -51,6 +51,9 @@
     <ClCompile Include="collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="medalScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="medalScreen.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

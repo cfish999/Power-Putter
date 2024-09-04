@@ -14,6 +14,7 @@
 #define ROTATION_SPEED 100.0f
 #define BALL_STATE_STILL 1
 #define BALL_STATE_MOVING 2
+#define BALL_STATE_STOPPED 3
 
 // arrow class
 #define ARROW_FILEPATH "texture/arrow.png"
@@ -39,4 +40,7 @@
 #define GOLD_TARGET "texture/gold.png"
 #define SILVER_TARGET "texture/silver.png"
 #define BRONZE_TARGET "texture/bronze.png"
+
+// game over screen
+#define GAME_OVER_TITLE "texture/game_over_title.png"
 

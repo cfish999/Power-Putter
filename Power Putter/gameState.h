@@ -8,6 +8,7 @@
 #include "power_bar.h"
 #include "target.h"
 #include "collision.h"
+#include "medalScreen.h"
 #include "game.h"
 
 namespace Fish
@@ -43,6 +44,8 @@ namespace Fish
 
 		int _gameState;
 		int _defaultSpeed = 10;
+		int _medalTier = 0;
+		int _attempts = 3;
 		bool firstClick = true;
 	};
 }

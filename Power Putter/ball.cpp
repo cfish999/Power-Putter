@@ -58,10 +58,11 @@ namespace Fish {
 		}
 		
 
-		// when the ball has stopped moving set the state to still 
+		// when the ball has stopped moving set the state to stopped
 		if (_slowdown < 0.0) {
-			_ballState = BALL_STATE_STILL;
-			
+			if (_ballState != BALL_STATE_STILL) {
+				_ballState = BALL_STATE_STOPPED;
+			}
 		}
 
 	}

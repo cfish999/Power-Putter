@@ -139,6 +139,7 @@
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenuState.cpp" />
+    <ClCompile Include="medalScreen.cpp" />
     <ClCompile Include="power_bar.cpp" />
     <ClCompile Include="stateMachine.cpp" />
     <ClCompile Include="target.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="gameState.h" />
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="mainMenuState.h" />
+    <ClInclude Include="medalScreen.h" />
     <ClInclude Include="power_bar.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stateMachine.h" />

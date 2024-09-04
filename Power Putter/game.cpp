@@ -32,7 +32,7 @@ namespace Fish
 			// process state changes all the time
 			this->_data->machine.ProcessStateChanges();
 
-			// calculate time to keep frame rates consisten and keep everything running smoothly 
+			// calculate time to keep frame rates consistent and keep everything running smoothly 
 			newTime = this->_clock.getElapsedTime().asSeconds();
 			frameTime = newTime - currentTime;
 

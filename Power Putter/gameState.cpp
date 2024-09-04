@@ -6,6 +6,7 @@
 #include "power_bar.h"
 #include "target.h"
 #include "collision.h"
+#include "medalScreen.h"
 #include "DEFINITIONS.h"
 
 #include <iostream>
@@ -89,20 +90,41 @@ namespace Fish
 			ball->Move(arrowAngle,powerBarSpeed);
 		}
 
-		if (ball->_ballState == BALL_STATE_STILL) {
+		if (ball->_ballState == BALL_STATE_STOPPED) {
 			
-			// must be ball then target for sprites to work 
+			// must be ball then target for sprites to work for collision
+			// the following sets the players best medal out of their 3 tries
 			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetGoldSprite())) {
 				std::cout << "gold medal" << std::endl;
+				_medalTier = 3;
 			}
 			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite())) {
 				std::cout << "silver medal" << std::endl;
+				if (_medalTier < 2) {
+					_medalTier = 2;
+				}
 			}
 			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetBronzeSprite())) {
 				std::cout << "bronze medal" << std::endl;
+				if (_medalTier < 1) {
+					_medalTier = 1;
+				}
 			}
 			else {
 				std::cout << "no medal!" << std::endl;
+			}
+
+			// makes the player have one less attempt as they have just used one
+			_attempts--;
+			
+			// when all attempts have been used up go to the medal screen 
+			if (_attempts == 0) {
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier)), true);
+			}
+			else {
+				// resets the screen for future attempts 
+				firstClick = true;
+				Init();
 			}
 		}
 
