@@ -7,6 +7,7 @@
 #include "target.h"
 #include "collision.h"
 #include "medalScreen.h"
+#include "squareObstacles.h"
 #include "DEFINITIONS.h"
 
 #include <iostream>
@@ -36,14 +37,18 @@ namespace Fish
 		this->_data->assets.LoadTexture("Gold Target", GOLD_TARGET);
 		this->_data->assets.LoadTexture("Silver Target", SILVER_TARGET);
 		this->_data->assets.LoadTexture("Bronze Target", BRONZE_TARGET);
-
+		this->_data->assets.LoadTexture("Square", SQUARE_OBSTACLE);
 		
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
 		powerBar = new PowerBar(_data);
 		targets = new Target(_data);
+		squareObstacles = new SquareObstacles(_data);
 
-
+		// spawns 1 square
+		squareObstacles->SpawnSquare();
+		// stores a vector of sprites that are squares
+		squareSprites = squareObstacles->GetSprites();
 
 		// at the minute we are reusing the background asset as we have not created a game screen background yet 
 		_background.setTexture(this->_data->assets.GetTexture("Main Menu Background"));
@@ -74,6 +79,9 @@ namespace Fish
 					arrow->_arrowState = SHOT;
 					ball->_ballState = BALL_STATE_MOVING;
 					powerBarSpeed = powerBar->GetSpeed();
+					// allows us to do the bouncing calculation easily 
+					sf::Vector2f powerBarVelocity (powerBarSpeed, powerBarSpeed);
+					powerBarSpeeds = powerBarVelocity;
 				}
 			}
 		}
@@ -87,7 +95,30 @@ namespace Fish
 
 		// moves the ball only when direction and power bar strength has been set
 		if (arrow->_arrowState == SHOT) {
-			ball->Move(arrowAngle,powerBarSpeed);
+
+			for (unsigned short int i = 0; i < squareSprites.size(); i++) {
+				// checks the ball has not collided with any of the square obstacles
+				_squareCollision = collision.CheckBallAndSquareCollision(ball->GetSprite(), squareSprites.at(i));
+				std::cout << _squareCollision << std::endl;
+
+				if (_squareCollision == 0) {
+					// moves without bouncing 
+					ball->Move(arrowAngle, powerBarSpeeds);
+				}
+				else if(_squareCollision == 1) {
+					// bounces in y-axis
+					powerBarSpeeds.y *= -1;
+					ball->Move(arrowAngle, powerBarSpeeds);
+					ball->Move(arrowAngle, powerBarSpeeds);
+				}
+				else {
+					// _squaresCollision is 2 so bounces in x-axis
+					powerBarSpeeds.x *= -1;
+					ball->Move(arrowAngle, powerBarSpeeds);
+					ball->Move(arrowAngle, powerBarSpeeds);
+				}
+
+			}
 		}
 
 		if (ball->_ballState == BALL_STATE_STOPPED) {
@@ -97,6 +128,8 @@ namespace Fish
 			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetGoldSprite())) {
 				std::cout << "gold medal" << std::endl;
 				_medalTier = 3;
+				// straight to the next level if gold medal is achieved first or second try
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier)), true);
 			}
 			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite())) {
 				std::cout << "silver medal" << std::endl;
@@ -111,7 +144,12 @@ namespace Fish
 				}
 			}
 			else {
-				std::cout << "no medal!" << std::endl;
+				if (collision.CheckBoundAreaAndBallCollision(ball->GetSprite(), sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))) {
+					std::cout << "missed" << std::endl;
+				}
+				else {
+					std::cout << "out of bounds" << std::endl;
+				}
 			}
 
 			// makes the player have one less attempt as they have just used one
@@ -140,6 +178,7 @@ namespace Fish
 		arrow->Draw();
 		ball->Draw();
 		powerBar->Draw();
+		squareObstacles->DrawSquares();
 
 		this->_data->window.display();
 	}

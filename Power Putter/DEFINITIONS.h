@@ -44,3 +44,6 @@
 // game over screen
 #define GAME_OVER_TITLE "texture/game_over_title.png"
 
+// square obstacle class
+#define SQUARE_OBSTACLE "texture/square.png"
+

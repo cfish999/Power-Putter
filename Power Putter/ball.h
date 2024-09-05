@@ -15,7 +15,7 @@ namespace Fish {
 
 		void Draw();
 		void Update(float dt);
-		void Move(float angle, float speed);
+		void Move(float angle, sf::Vector2f speed);
 		const sf::Sprite& GetSprite() const;
 
 		int _ballState;
@@ -31,6 +31,10 @@ namespace Fish {
 
 		float _rotation;
 		float _slowdown = 1.0;
+
+		int speedX;
+		int speedY;
+		bool _bounced = false;
 
 	};
 }

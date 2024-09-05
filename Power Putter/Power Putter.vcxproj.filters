@@ -54,6 +54,9 @@
     <ClCompile Include="medalScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="squareObstacles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="medalScreen.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="squareObstacles.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "ball.h"
 #include "DEFINITIONS.h"
+#include <iostream>
 
 
 namespace Fish {
@@ -43,7 +44,7 @@ namespace Fish {
 
 	}
 
-	void Ball::Move(float angle,float speed)
+	void Ball::Move(float angle,sf::Vector2f speed)
 	{
 
 		if (_ballState == BALL_STATE_MOVING) {
@@ -51,7 +52,7 @@ namespace Fish {
 			// calculation to work out the directions it moves
 			float radians = 2 * PI * (angle / 360);
 			// it moves corresponding to the direction given and the slowdown of the natural terrain (will implement speed and different terrains soon)
-			_ballSprite.move(speed * cos(radians) * _slowdown, speed * sin(radians) * _slowdown);
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown);
 
 			// slows down the ball over time 
 			_slowdown -= 0.01;

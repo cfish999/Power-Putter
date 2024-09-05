@@ -9,6 +9,7 @@
 #include "target.h"
 #include "collision.h"
 #include "medalScreen.h"
+#include "squareObstacles.h"
 #include "game.h"
 
 namespace Fish
@@ -37,15 +38,20 @@ namespace Fish
 		// pointer to power bar object
 		PowerBar* powerBar;
 		float powerBarSpeed;
+		sf::Vector2f powerBarSpeeds;
 		// pointer to target objects
 		Target* targets;
-		
+		// pointer to square objects
+		SquareObstacles* squareObstacles;
+		std::vector<sf::Sprite> squareSprites;
+
 		Collision collision;
 
 		int _gameState;
 		int _defaultSpeed = 10;
 		int _medalTier = 0;
 		int _attempts = 3;
+		int _squareCollision = 0;
 		bool firstClick = true;
 	};
 }
