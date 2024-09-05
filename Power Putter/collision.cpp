@@ -49,9 +49,6 @@ namespace Fish {
 		sf::Vector2i delta (abs(sprite2.getPosition().x - sprite1.getPosition().x), 
 			abs(sprite2.getPosition().y - sprite1.getPosition().y));
 
-		std::cout << delta.x << std::endl;
-		std::cout << delta.y << std::endl;
-
 		sf::Vector2f overlap((sprite1.getGlobalBounds().height / 2) + (sprite2.getGlobalBounds().height / 2) - delta.x,
 			(sprite1.getGlobalBounds().width / 2) + (sprite2.getGlobalBounds().width / 2) - delta.y);
 
@@ -66,6 +63,21 @@ namespace Fish {
 		}
 
 		return 0;
+	}
+
+	bool Collision::CheckBallAndWindCollision(sf::Sprite sprite1, sf::Sprite sprite2)
+	{
+
+		sf::Rect<float> rect1 = sprite1.getGlobalBounds();
+		sf::Rect<float> rect2 = sprite2.getGlobalBounds();
+
+		// if it collides
+		if (rect1.intersects(rect2)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }

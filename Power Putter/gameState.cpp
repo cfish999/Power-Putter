@@ -8,6 +8,7 @@
 #include "collision.h"
 #include "medalScreen.h"
 #include "squareObstacles.h"
+#include "fan.h"
 #include "DEFINITIONS.h"
 
 #include <iostream>
@@ -38,12 +39,20 @@ namespace Fish
 		this->_data->assets.LoadTexture("Silver Target", SILVER_TARGET);
 		this->_data->assets.LoadTexture("Bronze Target", BRONZE_TARGET);
 		this->_data->assets.LoadTexture("Square", SQUARE_OBSTACLE);
+		this->_data->assets.LoadTexture("Fan Frame 1", FAN_1);
+		this->_data->assets.LoadTexture("Fan Frame 2", FAN_2);
+		this->_data->assets.LoadTexture("Fan Frame 3", FAN_3);
+		this->_data->assets.LoadTexture("Fan Frame 4", FAN_4);
+		this->_data->assets.LoadTexture("Wind Low", WIND_LOW);
+		this->_data->assets.LoadTexture("Wind High", WIND_HIGH);
 		
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
 		powerBar = new PowerBar(_data);
 		targets = new Target(_data);
 		squareObstacles = new SquareObstacles(_data);
+		fan = new Fan(_data);
+		wind = new Wind(_data);
 
 		// spawns 1 square
 		squareObstacles->SpawnSquare();
@@ -92,6 +101,8 @@ namespace Fish
 		ball->Update(dt);
 		arrow->Update(dt);
 		powerBar->Animate(dt);
+		fan->Animate(dt);
+		wind->Animate(dt);
 
 		// moves the ball only when direction and power bar strength has been set
 		if (arrow->_arrowState == SHOT) {
@@ -99,25 +110,31 @@ namespace Fish
 			for (unsigned short int i = 0; i < squareSprites.size(); i++) {
 				// checks the ball has not collided with any of the square obstacles
 				_squareCollision = collision.CheckBallAndSquareCollision(ball->GetSprite(), squareSprites.at(i));
-				std::cout << _squareCollision << std::endl;
 
 				if (_squareCollision == 0) {
 					// moves without bouncing 
-					ball->Move(arrowAngle, powerBarSpeeds);
+					ball->Move(arrowAngle, powerBarSpeeds, _blown);
 				}
 				else if(_squareCollision == 1) {
 					// bounces in y-axis
 					powerBarSpeeds.y *= -1;
-					ball->Move(arrowAngle, powerBarSpeeds);
-					ball->Move(arrowAngle, powerBarSpeeds);
+					ball->Move(arrowAngle, powerBarSpeeds, _blown);
+					ball->Move(arrowAngle, powerBarSpeeds, _blown);
 				}
 				else {
 					// _squaresCollision is 2 so bounces in x-axis
 					powerBarSpeeds.x *= -1;
-					ball->Move(arrowAngle, powerBarSpeeds);
-					ball->Move(arrowAngle, powerBarSpeeds);
+					ball->Move(arrowAngle, powerBarSpeeds, _blown);
+					ball->Move(arrowAngle, powerBarSpeeds, _blown);
 				}
 
+			}
+
+			// blows the ball upwards 
+			if (collision.CheckBallAndWindCollision(ball->GetSprite(), wind->GetSprite())) {
+				_blown = true;
+				ball->Move(arrowAngle, powerBarSpeeds, _blown);
+				_blown = false;
 			}
 		}
 
@@ -162,6 +179,7 @@ namespace Fish
 			else {
 				// resets the screen for future attempts 
 				firstClick = true;
+				ball->_ballState = BALL_STATE_STILL;
 				Init();
 			}
 		}
@@ -179,6 +197,8 @@ namespace Fish
 		ball->Draw();
 		powerBar->Draw();
 		squareObstacles->DrawSquares();
+		fan->Draw();
+		wind->Draw();
 
 		this->_data->window.display();
 	}

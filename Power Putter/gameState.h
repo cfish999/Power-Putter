@@ -10,6 +10,8 @@
 #include "collision.h"
 #include "medalScreen.h"
 #include "squareObstacles.h"
+#include "fan.h"
+#include "wind.h"
 #include "game.h"
 
 namespace Fish
@@ -44,6 +46,10 @@ namespace Fish
 		// pointer to square objects
 		SquareObstacles* squareObstacles;
 		std::vector<sf::Sprite> squareSprites;
+		// pointer to fan object
+		Fan* fan;
+		// pointer to wind object
+		Wind* wind;
 
 		Collision collision;
 
@@ -52,6 +58,7 @@ namespace Fish
 		int _medalTier = 0;
 		int _attempts = 3;
 		int _squareCollision = 0;
+		bool _blown = false;
 		bool firstClick = true;
 	};
 }

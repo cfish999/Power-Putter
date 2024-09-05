@@ -44,15 +44,23 @@ namespace Fish {
 
 	}
 
-	void Ball::Move(float angle,sf::Vector2f speed)
+	void Ball::Move(float angle,sf::Vector2f speed,bool blown)
 	{
 
 		if (_ballState == BALL_STATE_MOVING) {
 			
 			// calculation to work out the directions it moves
 			float radians = 2 * PI * (angle / 360);
-			// it moves corresponding to the direction given and the slowdown of the natural terrain (will implement speed and different terrains soon)
-			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown);
+
+			if (!blown) {
+				// it moves corresponding to the direction given and the slowdown of the natural terrain (will implement speed and different terrains soon)
+				_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown);
+
+			}
+			else {
+				// - 15 is strength of upwards projection
+				_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown - 15);
+			}
 
 			// slows down the ball over time 
 			_slowdown -= 0.01;
@@ -67,6 +75,7 @@ namespace Fish {
 		}
 
 	}
+
 
 	const sf::Sprite& Ball::GetSprite() const
 	{

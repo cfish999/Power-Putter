@@ -47,3 +47,14 @@
 // square obstacle class
 #define SQUARE_OBSTACLE "texture/square.png"
 
+// fan class
+#define FAN_1 "texture/fan_1.png"
+#define FAN_2 "texture/fan_2.png"
+#define FAN_3 "texture/fan_3.png"
+#define FAN_4 "texture/fan_4.png"
+#define FAN_SPIN_SPEED 0.4f
+
+// wind class
+#define WIND_LOW "texture/wind_low.png"
+#define WIND_HIGH "texture/wind_high.png"
+#define WIND_SPEED 0.3f

@@ -57,6 +57,12 @@
     <ClCompile Include="squareObstacles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wind.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -102,6 +108,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="squareObstacles.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fan.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wind.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
