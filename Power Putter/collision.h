@@ -12,6 +12,10 @@ namespace Fish {
 		bool CheckBoundAreaAndBallCollision(sf::Sprite sprite1, sf::Vector2f window);
 		int CheckBallAndSquareCollision(sf::Sprite sprite1, sf::Sprite sprite2);
 		bool CheckBallAndWindCollision(sf::Sprite sprite1, sf::Sprite sprite2);
+		int CheckBallAndRectangleCollision(sf::Sprite sprite1, sf::Sprite sprite2);
+		bool CheckBallAndSpringSideCollision(sf::Sprite sprite1, sf::Sprite sprite2);
 
+	private:
+		int _formatting = 0;
 	};
 }

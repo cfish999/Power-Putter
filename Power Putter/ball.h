@@ -15,7 +15,7 @@ namespace Fish {
 
 		void Draw();
 		void Update(float dt);
-		void Move(float angle, sf::Vector2f speed, bool blown);
+		void Move(float angle, sf::Vector2f speed, bool effectOnBall, int direction, float force);
 		const sf::Sprite& GetSprite() const;
 
 		int _ballState;

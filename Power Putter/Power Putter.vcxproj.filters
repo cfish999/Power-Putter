@@ -63,6 +63,12 @@
     <ClCompile Include="wind.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="springboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="door.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateMachine.h">
@@ -116,5 +122,13 @@
     <ClInclude Include="wind.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="springboard.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="door.h">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

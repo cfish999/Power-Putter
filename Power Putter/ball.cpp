@@ -44,7 +44,7 @@ namespace Fish {
 
 	}
 
-	void Ball::Move(float angle,sf::Vector2f speed,bool blown)
+	void Ball::Move(float angle,sf::Vector2f speed,bool effectOnBall, int direction, float force)
 	{
 
 		if (_ballState == BALL_STATE_MOVING) {
@@ -52,18 +52,30 @@ namespace Fish {
 			// calculation to work out the directions it moves
 			float radians = 2 * PI * (angle / 360);
 
-			if (!blown) {
+			if (!effectOnBall) {
 				// it moves corresponding to the direction given and the slowdown of the natural terrain (will implement speed and different terrains soon)
 				_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown);
+				// slows down the ball over time 
+				_slowdown -= 0.01;
 
 			}
 			else {
-				// - 15 is strength of upwards projection
-				_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown - 15);
+				// force is strength of projection
+				// 1 = up, 2 = down, 3 = right , 4 = left
+				if (direction == 1) {
+					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown - force);
+				}
+				else if (direction == 2) {
+					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown + force);
+				}
+				else if (direction == 3) {
+					_ballSprite.move(speed.x * cos(radians) * _slowdown + force, speed.y * sin(radians) * _slowdown);
+				}
+				else {
+					_ballSprite.move(speed.x * cos(radians) * _slowdown - force, speed.y * sin(radians) * _slowdown);
+				}
 			}
 
-			// slows down the ball over time 
-			_slowdown -= 0.01;
 		}
 		
 

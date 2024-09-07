@@ -45,6 +45,11 @@ namespace Fish
 		this->_data->assets.LoadTexture("Fan Frame 4", FAN_4);
 		this->_data->assets.LoadTexture("Wind Low", WIND_LOW);
 		this->_data->assets.LoadTexture("Wind High", WIND_HIGH);
+		this->_data->assets.LoadTexture("Springboard Low", SPRINGBOARD_LOW);
+		this->_data->assets.LoadTexture("Springboard Medium", SPRINGBOARD_MED);
+		this->_data->assets.LoadTexture("Springboard High", SPRINGBOARD_HIGH);
+		this->_data->assets.LoadTexture("Low Springboard Collision", SPRINGBOARD_COLLISION_LOW);
+		this->_data->assets.LoadTexture("Medium Springboard Collision", SPRINGBOARD_COLLISION_MEDIUM);
 		
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
@@ -53,6 +58,7 @@ namespace Fish
 		squareObstacles = new SquareObstacles(_data);
 		fan = new Fan(_data);
 		wind = new Wind(_data);
+		springboard = new Springboard(_data);
 
 		// spawns 1 square
 		squareObstacles->SpawnSquare();
@@ -103,40 +109,82 @@ namespace Fish
 		powerBar->Animate(dt);
 		fan->Animate(dt);
 		wind->Animate(dt);
+		springboard->Animate(dt);
 
 		// moves the ball only when direction and power bar strength has been set
 		if (arrow->_arrowState == SHOT) {
 
-			for (unsigned short int i = 0; i < squareSprites.size(); i++) {
+			// check whether it bounces off the square obstacles
+			for (unsigned short int i = 0; i < squareSprites.size(); i++) {  
 				// checks the ball has not collided with any of the square obstacles
 				_squareCollision = collision.CheckBallAndSquareCollision(ball->GetSprite(), squareSprites.at(i));
 
-				if (_squareCollision == 0) {
-					// moves without bouncing 
-					ball->Move(arrowAngle, powerBarSpeeds, _blown);
-				}
-				else if(_squareCollision == 1) {
+				if(_squareCollision == 1) {
 					// bounces in y-axis
 					powerBarSpeeds.y *= -1;
-					ball->Move(arrowAngle, powerBarSpeeds, _blown);
-					ball->Move(arrowAngle, powerBarSpeeds, _blown);
+					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
+					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
 				}
-				else {
+				else if(_squareCollision == 2) {
 					// _squaresCollision is 2 so bounces in x-axis
 					powerBarSpeeds.x *= -1;
-					ball->Move(arrowAngle, powerBarSpeeds, _blown);
-					ball->Move(arrowAngle, powerBarSpeeds, _blown);
+					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
+					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
 				}
 
 			}
 
 			// blows the ball upwards 
 			if (collision.CheckBallAndWindCollision(ball->GetSprite(), wind->GetSprite())) {
-				_blown = true;
-				ball->Move(arrowAngle, powerBarSpeeds, _blown);
-				_blown = false;
+				_effectOnBall = true;
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,1,10);
+				_effectOnBall = false;
 			}
+
+			// checks for springboard collisions
+			_springSize = springboard->_animationIterator;
+
+			// medium setting so springs off
+			if (_springSize == 1) {
+				_springboardCollided = collision.CheckBallAndSpringSideCollision(ball->GetSprite(), springboard->GetMediumSprite());
+			}
+			// large setting so springs off
+			else if(_springSize == 2){
+				_springboardCollided = collision.CheckBallAndSpringSideCollision(ball->GetSprite(), springboard->GetLargeSprite());
+			}
+
+			if (_springboardCollided) {
+				// bounces off whatever axis it is facing and a set speed
+				_effectOnBall = true;
+				std::cout << "fast" << std::endl;
+				// sort out the springboard speeds
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 3, 25);
+				_effectOnBall = false;
+			}
+
+			// smallest spring setting so no bounce just reflect 
+			_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), springboard->GetSmallSprite());
+			// if 1,2 reflect off x axis or y axis 
+			std::cout << _rectangleCollision << std::endl;
+			if (_rectangleCollision == 1) {
+				// bounces in y-axis
+				powerBarSpeeds.y *= -1;
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+			}
+			else if (_rectangleCollision == 2) {
+				// bounces in y-axis
+				powerBarSpeeds.x *= -1;
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+			}
+			
+
+			// moves the ball in the direction it was aimed
+			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+
 		}
+
 
 		if (ball->_ballState == BALL_STATE_STOPPED) {
 			
@@ -199,6 +247,7 @@ namespace Fish
 		squareObstacles->DrawSquares();
 		fan->Draw();
 		wind->Draw();
+		springboard->Draw();
 
 		this->_data->window.display();
 	}

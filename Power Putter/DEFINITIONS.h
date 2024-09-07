@@ -58,3 +58,21 @@
 #define WIND_LOW "texture/wind_low.png"
 #define WIND_HIGH "texture/wind_high.png"
 #define WIND_SPEED 0.3f
+
+// springboard
+#define SPRINGBOARD_LOW "texture/springboard_low.png"
+#define SPRINGBOARD_MED "texture/springboard_medium.png"
+#define SPRINGBOARD_HIGH "texture/springboard_high.png"
+#define SPRINGBOARD_COLLISION_LOW "texture/springboard_collisionLow.png"
+#define SPRINGBOARD_COLLISION_MEDIUM "texture/springboard_collisionMedium.png"
+// spring board springs every 3 seconds
+#define SPRINGBOARD_MOVE 3.0f
+#define SPRINGBOARD_ANIMATION 0.8f
+
+// door class
+#define DOOR_CLOSED "texture/door_closed.png"
+#define DOOR_OPENING "texture/door_opening.png"
+#define DOOR_OPEN "texture/door_open.png"
+// door opens and closes every 4 seconds
+#define DOOR_TIMER 4.0f
+#define DOOR_ANIMATION 0.3f

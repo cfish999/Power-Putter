@@ -12,6 +12,7 @@
 #include "squareObstacles.h"
 #include "fan.h"
 #include "wind.h"
+#include "springboard.h"
 #include "game.h"
 
 namespace Fish
@@ -50,6 +51,8 @@ namespace Fish
 		Fan* fan;
 		// pointer to wind object
 		Wind* wind;
+		// pointer to springboard object
+		Springboard* springboard;
 
 		Collision collision;
 
@@ -58,7 +61,10 @@ namespace Fish
 		int _medalTier = 0;
 		int _attempts = 3;
 		int _squareCollision = 0;
-		bool _blown = false;
+		bool _springboardCollided = false;
+		int _springSize = 0;
+		int _rectangleCollision = 0;
+		bool _effectOnBall = false;
 		bool firstClick = true;
 	};
 }

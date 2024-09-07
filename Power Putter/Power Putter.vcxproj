@@ -134,6 +134,7 @@
     <ClCompile Include="assetManager.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="door.cpp" />
     <ClCompile Include="fan.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameState.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="mainMenuState.cpp" />
     <ClCompile Include="medalScreen.cpp" />
     <ClCompile Include="power_bar.cpp" />
+    <ClCompile Include="springboard.cpp" />
     <ClCompile Include="squareObstacles.cpp" />
     <ClCompile Include="stateMachine.cpp" />
     <ClCompile Include="target.cpp" />
@@ -160,11 +162,15 @@
     <ClInclude Include="mainMenuState.h" />
     <ClInclude Include="medalScreen.h" />
     <ClInclude Include="power_bar.h" />
+    <ClInclude Include="springboard.h" />
     <ClInclude Include="squareObstacles.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stateMachine.h" />
     <ClInclude Include="target.h" />
     <ClInclude Include="wind.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="door.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
