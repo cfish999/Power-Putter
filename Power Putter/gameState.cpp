@@ -50,6 +50,11 @@ namespace Fish
 		this->_data->assets.LoadTexture("Springboard High", SPRINGBOARD_HIGH);
 		this->_data->assets.LoadTexture("Low Springboard Collision", SPRINGBOARD_COLLISION_LOW);
 		this->_data->assets.LoadTexture("Medium Springboard Collision", SPRINGBOARD_COLLISION_MEDIUM);
+		this->_data->assets.LoadTexture("Closed Door", DOOR_CLOSED);
+		this->_data->assets.LoadTexture("Opening Door", DOOR_OPENING);
+		this->_data->assets.LoadTexture("Open Door", DOOR_OPEN);
+		this->_data->assets.LoadTexture("Left Open Door", LEFT_OPEN_DOOR);
+		this->_data->assets.LoadTexture("Right Open Door", RIGHT_OPEN_DOOR);
 		
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
@@ -59,6 +64,7 @@ namespace Fish
 		fan = new Fan(_data);
 		wind = new Wind(_data);
 		springboard = new Springboard(_data);
+		door = new Door(_data);
 
 		// spawns 1 square
 		squareObstacles->SpawnSquare();
@@ -110,6 +116,7 @@ namespace Fish
 		fan->Animate(dt);
 		wind->Animate(dt);
 		springboard->Animate(dt);
+		door->Animate(dt);
 
 		// moves the ball only when direction and power bar strength has been set
 		if (arrow->_arrowState == SHOT) {
@@ -156,7 +163,6 @@ namespace Fish
 			if (_springboardCollided) {
 				// bounces off whatever axis it is facing and a set speed
 				_effectOnBall = true;
-				std::cout << "fast" << std::endl;
 				// sort out the springboard speeds
 				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 3, 25);
 				_effectOnBall = false;
@@ -164,19 +170,34 @@ namespace Fish
 
 			// smallest spring setting so no bounce just reflect 
 			_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), springboard->GetSmallSprite());
-			// if 1,2 reflect off x axis or y axis 
-			std::cout << _rectangleCollision << std::endl;
 			if (_rectangleCollision == 1) {
 				// bounces in y-axis
-				powerBarSpeeds.y *= -1;
-				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
-				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+				Movement(_rectangleCollision);
 			}
 			else if (_rectangleCollision == 2) {
-				// bounces in y-axis
-				powerBarSpeeds.x *= -1;
-				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
-				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+				// bounces in x-axis
+				Movement(_rectangleCollision);
+			}
+
+			_doorState = door->_animationIterator;
+			if (_doorState == 0 || _doorState == 1) {
+				_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), door->GetDoorSprite());
+				if (_rectangleCollision > 0) {
+					Movement(_rectangleCollision);
+				}
+			}
+			else {
+				_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), door->GetLeftOpenDoor());
+
+				if (_rectangleCollision > 0) {
+					Movement(_rectangleCollision);
+				}
+
+				_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), door->GetRightOpenDoor());
+
+				if (_rectangleCollision > 0) {
+					Movement(_rectangleCollision);
+				}
 			}
 			
 
@@ -234,6 +255,22 @@ namespace Fish
 
 	}
 
+	void GameState::Movement(int axisAffected)
+	{
+		if (axisAffected == 1) {
+			// bounces in y-axis
+			powerBarSpeeds.y *= -1;
+			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+		}
+		else {
+			// bounces in x-axis
+			powerBarSpeeds.x *= -1;
+			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+		}
+	}
+
 	void GameState::Draw(float dt)
 	{
 		// draws all the level contents to the screen 
@@ -248,6 +285,7 @@ namespace Fish
 		fan->Draw();
 		wind->Draw();
 		springboard->Draw();
+		door->Draw();
 
 		this->_data->window.display();
 	}

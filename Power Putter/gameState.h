@@ -13,6 +13,7 @@
 #include "fan.h"
 #include "wind.h"
 #include "springboard.h"
+#include "door.h"
 #include "game.h"
 
 namespace Fish
@@ -27,6 +28,7 @@ namespace Fish
 		void HandleInput();
 		void Update(float dt);
 		void Draw(float dt);
+		void Movement(int axisAffected);
 
 	private:
 		GameDataRef _data;
@@ -53,6 +55,8 @@ namespace Fish
 		Wind* wind;
 		// pointer to springboard object
 		Springboard* springboard;
+		// pointer to door object
+		Door* door;
 
 		Collision collision;
 
@@ -64,6 +68,7 @@ namespace Fish
 		bool _springboardCollided = false;
 		int _springSize = 0;
 		int _rectangleCollision = 0;
+		int _doorState = 0;
 		bool _effectOnBall = false;
 		bool firstClick = true;
 	};

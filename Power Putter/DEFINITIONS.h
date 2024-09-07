@@ -73,6 +73,8 @@
 #define DOOR_CLOSED "texture/door_closed.png"
 #define DOOR_OPENING "texture/door_opening.png"
 #define DOOR_OPEN "texture/door_open.png"
+#define RIGHT_OPEN_DOOR "texture/door_open_right.png"
+#define LEFT_OPEN_DOOR "texture/door_open_left.png"
 // door opens and closes every 4 seconds
 #define DOOR_TIMER 4.0f
 #define DOOR_ANIMATION 0.3f

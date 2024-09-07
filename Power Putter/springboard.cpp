@@ -84,12 +84,6 @@ namespace Fish {
 		}
 	}
 
-	int Springboard::SpringboardHeight()
-	{
-		// returns wether the springboard is low high or medium
-		return _animationIterator;
-	}
-
 	const sf::Sprite& Springboard::GetSmallSprite() const
 	{
 		return _collisionLowSprite;

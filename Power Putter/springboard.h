@@ -15,7 +15,6 @@ namespace Fish {
 
 		void Draw();
 		void Animate(float dt);
-		int SpringboardHeight();
 		const sf::Sprite& GetSmallSprite() const;
 		const sf::Sprite& GetMediumSprite() const;
 		const sf::Sprite& GetLargeSprite() const;
@@ -27,6 +26,7 @@ namespace Fish {
 		GameDataRef _data;
 
 		sf::Sprite _springboardSprite;
+		sf::Sprite _openRightDoorSprite;
 		sf::Sprite _collisionLowSprite;
 		sf::Sprite _collisionMediumSprite;
 		sf::Sprite _collisionLargeSprite;
