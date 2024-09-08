@@ -55,8 +55,12 @@ namespace Fish
 		Fan* fan;
 		// pointer to wind object
 		Wind* wind;
+		std::vector<sf::Sprite> windSprites;
+		std::vector<int> windDirections;
 		// pointer to springboard object
 		Springboard* springboard;
+		std::vector<sf::Sprite> springboardSprites;
+		std::vector<int> springboardDirections;
 		// pointer to door object
 		Door* door;
 
@@ -70,6 +74,7 @@ namespace Fish
 		bool _springboardCollided = false;
 		int _springSize = 0;
 		int _rectangleCollision = 0;
+		int _directionalWind = 0;
 		int _doorState = 0;
 		float fan_strength = 0;
 		bool _effectOnBall = false;

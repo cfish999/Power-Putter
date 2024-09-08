@@ -9,7 +9,7 @@ namespace Fish {
 
 	}
 
-	void SquareObstacles::SpawnSquare(int x, int y, int scaleX, int scaleY) {
+	void SquareObstacles::SpawnSquare(int x, int y, float scaleX, float scaleY) {
 
 		// future give it position x and y values to help construct a level
 		sf::Sprite sprite(_data->assets.GetTexture("Square"));

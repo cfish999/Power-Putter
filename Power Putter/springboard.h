@@ -13,11 +13,13 @@ namespace Fish {
 
 		Springboard(GameDataRef data);
 
+		void SpawnSpringboard(int x, int y, float scaleX, float scaleY, int rotation);
 		void Draw();
 		void Animate(float dt);
+		const std::vector<sf::Sprite>& GetSprites() const;
+		const std::vector<int>& GetDirections() const;
 		const sf::Sprite& GetSmallSprite() const;
 		const sf::Sprite& GetMediumSprite() const;
-		const sf::Sprite& GetLargeSprite() const;
 
 		unsigned int _animationIterator;
 
@@ -26,11 +28,13 @@ namespace Fish {
 		GameDataRef _data;
 
 		sf::Sprite _springboardSprite;
-		sf::Sprite _openRightDoorSprite;
+		std::vector<sf::Sprite> _springboardSprites;
+		std::vector<int> _springboardDirections;
+		std::vector<sf::Texture> _animationFrames;
 		sf::Sprite _collisionLowSprite;
 		sf::Sprite _collisionMediumSprite;
-		sf::Sprite _collisionLargeSprite;
-		std::vector<sf::Texture> _animationFrames;
+
+
 
 		bool _animation = true;
 

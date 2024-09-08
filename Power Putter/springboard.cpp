@@ -6,53 +6,40 @@ namespace Fish {
 
 		_animationIterator = 0;
 
-		// pushes the fan frames onto the animation frames stack
+		// pushes the springboard frames onto the animation frames stack
 		_animationFrames.push_back(_data->assets.GetTexture("Springboard Low"));
 		_animationFrames.push_back(_data->assets.GetTexture("Springboard Medium"));
 		_animationFrames.push_back(_data->assets.GetTexture("Springboard High"));
 
 		_springboardSprite.setTexture(_animationFrames.at(_animationIterator));
 
-		// the position of the springboard on the window 
-		_springboardSprite.setPosition(100, 500);
-		_springboardSprite.setOrigin(sf::Vector2f(_springboardSprite.getGlobalBounds().width / 2,
-			_springboardSprite.getGlobalBounds().height / 2));
-		_springboardSprite.rotate(90);
-		_springboardSprite.scale(3, 3);
+	}
 
+	void Springboard::SpawnSpringboard(int x, int y, float scaleX, float scaleY, int rotation)
+	{
+		sf::Sprite _springboardSprite(_data->assets.GetTexture("Springboard Low"));
 
-		_collisionLowSprite.setTexture(this->_data->assets.GetTexture("Low Springboard Collision"));
-		_collisionLowSprite.setPosition(100, 500);
-		_collisionLowSprite.setOrigin(sf::Vector2f(_collisionLowSprite.getGlobalBounds().width / 2,
-			_collisionLowSprite.getGlobalBounds().height / 2));
-		_collisionLowSprite.rotate(90);
-		_collisionLowSprite.scale(3, 3);
-		// makes it invisible 
-		_collisionLowSprite.setColor(sf::Color(0, 0, 0));
+		// the position of the wind on the window
+		_springboardSprite.setPosition(x, y);
 
-		_collisionMediumSprite.setTexture(this->_data->assets.GetTexture("Medium Springboard Collision"));
-		_collisionMediumSprite.setPosition(100, 500);
-		_collisionMediumSprite.setOrigin(sf::Vector2f(_collisionMediumSprite.getGlobalBounds().width / 2,
-			_collisionMediumSprite.getGlobalBounds().height / 2));
-		_collisionMediumSprite.rotate(90);
-		_collisionMediumSprite.scale(3, 3);
-		// makes it invisible 
-		_collisionMediumSprite.setColor(sf::Color(0, 0, 0));
+		sf::Vector2f origin = sf::Vector2f(_springboardSprite.getGlobalBounds().width / 2, _springboardSprite.getGlobalBounds().height / 2);
+		_springboardSprite.setOrigin(origin);
 
-		_collisionLargeSprite.setTexture(this->_data->assets.GetTexture("Springboard High"));
-		_collisionLargeSprite.setPosition(100, 500);
-		_collisionLargeSprite.setOrigin(sf::Vector2f(_collisionLargeSprite.getGlobalBounds().width / 2,
-			_collisionLargeSprite.getGlobalBounds().height / 2));
-		_collisionLargeSprite.rotate(90);
-		_collisionLargeSprite.scale(3, 3);
-		// makes it invisible 
-		_collisionLargeSprite.setColor(sf::Color(0, 0, 0));
+		_springboardSprite.scale(scaleX, scaleY);
+		_springboardSprite.rotate(rotation);
+
+		// pushes the springboard sprite and its direction (used for later collisions)
+		_springboardSprites.push_back(_springboardSprite);
+		_springboardDirections.push_back(rotation);
 
 	}
 
 	void Springboard::Draw() {
 
-		_data->window.draw(_springboardSprite);
+		for (unsigned short int i = 0; i < _springboardSprites.size(); i++) {
+			// draws all of the springboards currently stored in the vector onto the screen 
+			_data->window.draw(_springboardSprites.at(i));
+		}
 	}
 
 	void Springboard::Animate(float dt)
@@ -70,9 +57,11 @@ namespace Fish {
 					_animationIterator = 0;
 				}
 
-				// sets the current frame 
-				_springboardSprite.setPosition(100, 500);
-				_springboardSprite.setTexture(_animationFrames.at(_animationIterator));
+				// animates them all at the same time 
+				for (unsigned short int i = 0; i < _springboardSprites.size(); i++) {
+					// sets the current frame 
+					_springboardSprites.at(i).setTexture(_animationFrames.at(_animationIterator));
+				}
 
 				_clock.restart();
 
@@ -84,19 +73,14 @@ namespace Fish {
 		}
 	}
 
-	const sf::Sprite& Springboard::GetSmallSprite() const
+	const std::vector<sf::Sprite>& Springboard::GetSprites() const
 	{
-		return _collisionLowSprite;
+		return _springboardSprites;
 	}
 
-	const sf::Sprite& Springboard::GetMediumSprite() const
+	const std::vector<int>& Springboard::GetDirections() const
 	{
-		return _collisionMediumSprite;
-	}
-
-	const sf::Sprite& Springboard::GetLargeSprite() const
-	{
-		return _collisionLargeSprite;
+		return _springboardDirections;
 	}
 
 }

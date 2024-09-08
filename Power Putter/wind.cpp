@@ -12,16 +12,34 @@ namespace Fish {
 
 		_windSprite.setTexture(_animationFrames.at(_animationIterator));
 
-		// the position of the fan on the window
-	
-		_windSprite.scale(2, 2);
-		_windSprite.setPosition(500, 300);
+	}
 
+	void Wind::SpawnWind(int x, int y, float scaleX, float scaleY, int rotation)
+	{
+		sf::Sprite _windSprite(_data->assets.GetTexture("Wind High"));
+
+		// the position of the wind on the window
+		_windSprite.setPosition(x, y);
+
+		sf::Vector2f origin = sf::Vector2f(_windSprite.getGlobalBounds().width / 2, _windSprite.getGlobalBounds().height / 2);
+		_windSprite.setOrigin(origin);
+
+		_windSprite.scale(scaleX, scaleY);
+		_windSprite.rotate(rotation);
+
+		// pushes the wind sprite and its direction (used for later collisions)
+		_windSprites.push_back(_windSprite);
+		_windDirections.push_back(rotation);
+		
 	}
 
 	void Wind::Draw() {
 
-		_data->window.draw(_windSprite);
+		for (unsigned short int i = 0; i < _windSprites.size(); i++) {
+
+			// draws all of the wind currently stored in the vector onto the screen 
+			_data->window.draw(_windSprites.at(i));
+		}
 	}
 
 	void Wind::Animate(float dt)
@@ -37,16 +55,26 @@ namespace Fish {
 				_animationIterator = 0;
 			}
 
-			// sets the current frame 
-			_windSprite.setTexture(_animationFrames.at(_animationIterator));
+			// animates them all at the same time 
+			for (unsigned short int i = 0; i < _windSprites.size(); i++) {
 
+				// sets the current frame 
+				_windSprites.at(i).setTexture(_animationFrames.at(_animationIterator));
+
+			}
 			_clock.restart();
+
 		}
 	}
 
-	const sf::Sprite& Wind::GetSprite() const
+	const std::vector<sf::Sprite>& Wind::GetSprites() const
 	{
-		return _windSprite;
+		return _windSprites;
+	}
+
+	const std::vector<int>& Wind::GetDirections() const
+	{
+		return _windDirections;
 	}
 
 }

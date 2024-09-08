@@ -102,7 +102,7 @@ namespace Fish {
 		return 0;
 	}
 
-	bool Collision::CheckBallAndSpringSideCollision(sf::Sprite sprite1, sf::Sprite sprite2)
+	bool Collision::CheckBallAndSpringSideCollision(sf::Sprite sprite1, sf::Sprite sprite2, int direction)
 	{
 		// checks for direction bouncing off the right (height) 
 		// using AABB for collisions 
@@ -114,9 +114,17 @@ namespace Fish {
 
 		if (overlap.x > 0.0 && overlap.y > 0.0) {
 
-			if (overlap.x < overlap.y) {
-				// does spring off the x axis 
-				return true;
+			if (direction == 0 || direction == 180) {
+				if (overlap.x < overlap.y) {
+					// does spring off the x axis 
+					return true;
+				}
+			}
+			else {
+				if (overlap.x < overlap.y) {
+					// does spring off the y axis 
+					return true;
+				}
 			}
 
 		}
@@ -140,6 +148,28 @@ namespace Fish {
 		float fanStrength = 1 / distance;
 
 		return  fanStrength * 300;
+	}
+
+	int Collision::CheckBallAndSpringboardCollision(sf::Sprite sprite1, sf::Sprite sprite2,float width, float height)
+	{
+		// using AABB for collisions 
+		sf::Vector2i delta(abs(sprite2.getPosition().x - sprite1.getPosition().x),
+			abs(sprite2.getPosition().y - sprite1.getPosition().y));
+
+		sf::Vector2f overlap((sprite1.getGlobalBounds().width / 2) + (width/2) - delta.x,
+			(sprite1.getGlobalBounds().height / 2) + (height/2) - delta.y);
+
+		if (overlap.x > 0.0 && overlap.y > 0.0) {
+
+			if (overlap.x > overlap.y) {
+				return 1;
+			}
+			else {
+				return 2;
+			}
+		}
+
+		return 0;
 	}
 
 
