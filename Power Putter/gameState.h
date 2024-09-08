@@ -29,6 +29,8 @@ namespace Fish
 		void Update(float dt);
 		void Draw(float dt);
 		void Movement(int axisAffected);
+		void SetPositionOfComponents();
+		void LoadTextures();
 
 	private:
 		GameDataRef _data;
@@ -69,6 +71,7 @@ namespace Fish
 		int _springSize = 0;
 		int _rectangleCollision = 0;
 		int _doorState = 0;
+		float fan_strength = 0;
 		bool _effectOnBall = false;
 		bool firstClick = true;
 	};

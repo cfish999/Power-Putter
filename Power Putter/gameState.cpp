@@ -23,39 +23,8 @@ namespace Fish
 	void GameState::Init()
 	{
 		
-		this->_data->assets.LoadTexture("Ball Sprite", BALL_FRAME_FILEPATH);
-		this->_data->assets.LoadTexture("Arrow Sprite", ARROW_FILEPATH);
-		this->_data->assets.LoadTexture("Power Bar 1", POWER_BAR_FRAME1);
-		this->_data->assets.LoadTexture("Power Bar 2", POWER_BAR_FRAME2);
-		this->_data->assets.LoadTexture("Power Bar 3", POWER_BAR_FRAME3);
-		this->_data->assets.LoadTexture("Power Bar 4", POWER_BAR_FRAME4);
-		this->_data->assets.LoadTexture("Power Bar 5", POWER_BAR_FRAME5);
-		this->_data->assets.LoadTexture("Power Bar 6", POWER_BAR_FRAME6);
-		this->_data->assets.LoadTexture("Power Bar 7", POWER_BAR_FRAME7);
-		this->_data->assets.LoadTexture("Power Bar 8", POWER_BAR_FRAME8);
-		this->_data->assets.LoadTexture("Power Bar 9", POWER_BAR_FRAME9);
-		this->_data->assets.LoadTexture("Power Bar 10", POWER_BAR_FRAME10);
-		this->_data->assets.LoadTexture("Gold Target", GOLD_TARGET);
-		this->_data->assets.LoadTexture("Silver Target", SILVER_TARGET);
-		this->_data->assets.LoadTexture("Bronze Target", BRONZE_TARGET);
-		this->_data->assets.LoadTexture("Square", SQUARE_OBSTACLE);
-		this->_data->assets.LoadTexture("Fan Frame 1", FAN_1);
-		this->_data->assets.LoadTexture("Fan Frame 2", FAN_2);
-		this->_data->assets.LoadTexture("Fan Frame 3", FAN_3);
-		this->_data->assets.LoadTexture("Fan Frame 4", FAN_4);
-		this->_data->assets.LoadTexture("Wind Low", WIND_LOW);
-		this->_data->assets.LoadTexture("Wind High", WIND_HIGH);
-		this->_data->assets.LoadTexture("Springboard Low", SPRINGBOARD_LOW);
-		this->_data->assets.LoadTexture("Springboard Medium", SPRINGBOARD_MED);
-		this->_data->assets.LoadTexture("Springboard High", SPRINGBOARD_HIGH);
-		this->_data->assets.LoadTexture("Low Springboard Collision", SPRINGBOARD_COLLISION_LOW);
-		this->_data->assets.LoadTexture("Medium Springboard Collision", SPRINGBOARD_COLLISION_MEDIUM);
-		this->_data->assets.LoadTexture("Closed Door", DOOR_CLOSED);
-		this->_data->assets.LoadTexture("Opening Door", DOOR_OPENING);
-		this->_data->assets.LoadTexture("Open Door", DOOR_OPEN);
-		this->_data->assets.LoadTexture("Left Open Door", LEFT_OPEN_DOOR);
-		this->_data->assets.LoadTexture("Right Open Door", RIGHT_OPEN_DOOR);
-		
+		LoadTextures();
+
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
 		powerBar = new PowerBar(_data);
@@ -66,10 +35,7 @@ namespace Fish
 		springboard = new Springboard(_data);
 		door = new Door(_data);
 
-		// spawns 1 square
-		squareObstacles->SpawnSquare();
-		// stores a vector of sprites that are squares
-		squareSprites = squareObstacles->GetSprites();
+		SetPositionOfComponents();
 
 		// at the minute we are reusing the background asset as we have not created a game screen background yet 
 		_background.setTexture(this->_data->assets.GetTexture("Main Menu Background"));
@@ -128,15 +94,11 @@ namespace Fish
 
 				if(_squareCollision == 1) {
 					// bounces in y-axis
-					powerBarSpeeds.y *= -1;
-					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
-					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
+					Movement(_squareCollision);
 				}
 				else if(_squareCollision == 2) {
 					// _squaresCollision is 2 so bounces in x-axis
-					powerBarSpeeds.x *= -1;
-					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
-					ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,0,0);
+					Movement(_squareCollision);
 				}
 
 			}
@@ -144,7 +106,11 @@ namespace Fish
 			// blows the ball upwards 
 			if (collision.CheckBallAndWindCollision(ball->GetSprite(), wind->GetSprite())) {
 				_effectOnBall = true;
-				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,1,10);
+				// here will be distance the ball is from the fan as a multiplier
+				// also need to make ball and wind collision directional 
+				fan_strength = collision.CheckDistanceFromFan(ball->GetSprite(), fan->GetSprite(), true);
+				std::cout << fan_strength << std::endl;
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall,1,fan_strength*15);
 				_effectOnBall = false;
 			}
 
@@ -164,7 +130,8 @@ namespace Fish
 				// bounces off whatever axis it is facing and a set speed
 				_effectOnBall = true;
 				// sort out the springboard speeds
-				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 3, 25);
+				std::cout << "spring" << std::endl;
+				ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 3, 1.5);
 				_effectOnBall = false;
 			}
 
@@ -271,6 +238,16 @@ namespace Fish
 		}
 	}
 
+	void GameState::SetPositionOfComponents()
+	{
+		// sets location of 2 squares
+		squareObstacles->SpawnSquare(32, 32, 1, 1);
+		squareObstacles->SpawnSquare(992, 32, 1, 1);
+		// stores a vector of sprites that are squares
+		squareSprites = squareObstacles->GetSprites();
+
+	}
+
 	void GameState::Draw(float dt)
 	{
 		// draws all the level contents to the screen 
@@ -289,4 +266,41 @@ namespace Fish
 
 		this->_data->window.display();
 	}
+
+	void GameState::LoadTextures()
+	{
+		this->_data->assets.LoadTexture("Ball Sprite", BALL_FRAME_FILEPATH);
+		this->_data->assets.LoadTexture("Arrow Sprite", ARROW_FILEPATH);
+		this->_data->assets.LoadTexture("Power Bar 1", POWER_BAR_FRAME1);
+		this->_data->assets.LoadTexture("Power Bar 2", POWER_BAR_FRAME2);
+		this->_data->assets.LoadTexture("Power Bar 3", POWER_BAR_FRAME3);
+		this->_data->assets.LoadTexture("Power Bar 4", POWER_BAR_FRAME4);
+		this->_data->assets.LoadTexture("Power Bar 5", POWER_BAR_FRAME5);
+		this->_data->assets.LoadTexture("Power Bar 6", POWER_BAR_FRAME6);
+		this->_data->assets.LoadTexture("Power Bar 7", POWER_BAR_FRAME7);
+		this->_data->assets.LoadTexture("Power Bar 8", POWER_BAR_FRAME8);
+		this->_data->assets.LoadTexture("Power Bar 9", POWER_BAR_FRAME9);
+		this->_data->assets.LoadTexture("Power Bar 10", POWER_BAR_FRAME10);
+		this->_data->assets.LoadTexture("Gold Target", GOLD_TARGET);
+		this->_data->assets.LoadTexture("Silver Target", SILVER_TARGET);
+		this->_data->assets.LoadTexture("Bronze Target", BRONZE_TARGET);
+		this->_data->assets.LoadTexture("Square", SQUARE_OBSTACLE);
+		this->_data->assets.LoadTexture("Fan Frame 1", FAN_1);
+		this->_data->assets.LoadTexture("Fan Frame 2", FAN_2);
+		this->_data->assets.LoadTexture("Fan Frame 3", FAN_3);
+		this->_data->assets.LoadTexture("Fan Frame 4", FAN_4);
+		this->_data->assets.LoadTexture("Wind Low", WIND_LOW);
+		this->_data->assets.LoadTexture("Wind High", WIND_HIGH);
+		this->_data->assets.LoadTexture("Springboard Low", SPRINGBOARD_LOW);
+		this->_data->assets.LoadTexture("Springboard Medium", SPRINGBOARD_MED);
+		this->_data->assets.LoadTexture("Springboard High", SPRINGBOARD_HIGH);
+		this->_data->assets.LoadTexture("Low Springboard Collision", SPRINGBOARD_COLLISION_LOW);
+		this->_data->assets.LoadTexture("Medium Springboard Collision", SPRINGBOARD_COLLISION_MEDIUM);
+		this->_data->assets.LoadTexture("Closed Door", DOOR_CLOSED);
+		this->_data->assets.LoadTexture("Opening Door", DOOR_OPENING);
+		this->_data->assets.LoadTexture("Open Door", DOOR_OPEN);
+		this->_data->assets.LoadTexture("Left Open Door", LEFT_OPEN_DOOR);
+		this->_data->assets.LoadTexture("Right Open Door", RIGHT_OPEN_DOOR);
+	}
+
 }

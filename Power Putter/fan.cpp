@@ -15,7 +15,7 @@ namespace Fish {
 		_fanSprite.setTexture(_animationFrames.at(_animationIterator));
 
 		// the position of the fan on the window 
-		_fanSprite.setPosition(800, 800);
+		_fanSprite.setPosition(500, 600);
 		_fanSprite.scale(2, 2);
 
 	}

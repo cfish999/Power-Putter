@@ -13,7 +13,7 @@ namespace Fish {
 	public:
 
 		SquareObstacles(GameDataRef data);
-		void SpawnSquare();
+		void SpawnSquare(int x,int y,int scaleX, int scaleY);
 		void DrawSquares();
 		const std::vector<sf::Sprite>& GetSprites() const;
 

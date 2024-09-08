@@ -125,6 +125,23 @@ namespace Fish {
 		return false;
 	}
 
+	float Collision::CheckDistanceFromFan(sf::Sprite sprite1, sf::Sprite sprite2, bool upOrDown)
+	{
+		float distance = 0;
+		if (upOrDown) {
+			// in y direction ball - fan
+			distance = abs(sprite1.getGlobalBounds().getPosition().y - sprite2.getGlobalBounds().getPosition().y);
+		}
+		else {
+			// in x direction ball - fan
+			distance = abs(sprite1.getGlobalBounds().getPosition().x - sprite2.getGlobalBounds().getPosition().x);
+		}
+
+		float fanStrength = 1 / distance;
+
+		return  fanStrength * 300;
+	}
+
 
 
 }

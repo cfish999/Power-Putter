@@ -63,16 +63,16 @@ namespace Fish {
 				// force is strength of projection
 				// 1 = up, 2 = down, 3 = right , 4 = left
 				if (direction == 1) {
-					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown - force);
+					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * force);
 				}
 				else if (direction == 2) {
-					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown + force);
+					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * force);
 				}
 				else if (direction == 3) {
-					_ballSprite.move(speed.x * cos(radians) * _slowdown + force, speed.y * sin(radians) * _slowdown);
+					_ballSprite.move(speed.x * cos(radians) * force, speed.y * sin(radians) * _slowdown);
 				}
 				else {
-					_ballSprite.move(speed.x * cos(radians) * _slowdown - force, speed.y * sin(radians) * _slowdown);
+					_ballSprite.move(speed.x * cos(radians) * force, speed.y * sin(radians) * _slowdown);
 				}
 			}
 

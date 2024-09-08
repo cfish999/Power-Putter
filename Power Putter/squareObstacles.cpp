@@ -9,30 +9,19 @@ namespace Fish {
 
 	}
 
-	void SquareObstacles::SpawnSquare() {
+	void SquareObstacles::SpawnSquare(int x, int y, int scaleX, int scaleY) {
 
 		// future give it position x and y values to help construct a level
 		sf::Sprite sprite(_data->assets.GetTexture("Square"));
 
-		sprite.setPosition(200,200);
+		sprite.setPosition(x,y);
 
 		sf::Vector2f origin = sf::Vector2f(sprite.getGlobalBounds().width / 2, sprite.getGlobalBounds().height / 2);
 		sprite.setOrigin(origin);
 
-		sprite.scale(3, 3);
+		sprite.scale(scaleX, scaleY);
 
 		squareSprites.push_back(sprite);
-
-		sf::Sprite sprite2(_data->assets.GetTexture("Square"));
-
-		sprite2.setPosition(200, 700);
-
-		sf::Vector2f origin2 = sf::Vector2f(sprite2.getGlobalBounds().width / 2, sprite2.getGlobalBounds().height / 2);
-		sprite2.setOrigin(origin2);
-
-		sprite2.scale(3, 3);
-
-		squareSprites.push_back(sprite2);
 
 	}
 

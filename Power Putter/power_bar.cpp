@@ -1,4 +1,5 @@
 #include "power_bar.h"
+#include <iostream>
 
 namespace Fish {
 
@@ -66,9 +67,11 @@ namespace Fish {
 	{
 		// sets the power bar needed to false to stop the animation occurring 
 		powerBarNeeded = false;
-		float lowestSpeed = 1;
+		float differential = rand() % 100;
+		// prevents division by 0 errors
+		float addition = (differential+1) / 100;
 
-		return (lowestSpeed * _animationIterator+1);
+		return (_animationIterator +1 + addition);
 
 	}
 
