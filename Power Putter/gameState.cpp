@@ -194,23 +194,26 @@ namespace Fish
 			}
 
 			_doorState = door->_animationIterator;
-			if (_doorState == 0 || _doorState == 1) {
-				_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), door->GetDoorSprite());
-				if (_rectangleCollision > 0) {
-					Movement(_rectangleCollision);
+
+			for (unsigned short int i = 0; i < doorSprites.size(); i++) {
+				if (_doorState == 0 || _doorState == 1) {
+					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), doorSprites.at(i));
+					if (_rectangleCollision > 0) {
+						Movement(_rectangleCollision);
+					}
 				}
-			}
-			else {
-				_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), door->GetLeftOpenDoor());
+				else {
+					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), leftDoorSprites.at(i));
+					if (_rectangleCollision > 0) {
+						std::cout << "confused" << std::endl;
+						Movement(_rectangleCollision);
+					}
 
-				if (_rectangleCollision > 0) {
-					Movement(_rectangleCollision);
-				}
+					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), rightDoorSprites.at(i));
 
-				_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), door->GetRightOpenDoor());
-
-				if (_rectangleCollision > 0) {
-					Movement(_rectangleCollision);
+					if (_rectangleCollision > 0) {
+						Movement(_rectangleCollision);
+					}
 				}
 			}
 			
@@ -309,6 +312,15 @@ namespace Fish
 		springboardSprites = springboard->GetSprites();
 		springboardDirections = springboard->GetDirections();
 
+		//spawns 2 doors
+		door->spawnDoor(352,32,1.56,1.684,0);
+		door->spawnDoor(416,32,1.56,1.684,90);
+
+		doorSprites = door->GetSprites();
+		rightDoorSprites = door->GetRightOpenDoors();
+		leftDoorSprites = door->GetLeftOpenDoors();
+		doorDirections = door->GetDirections();
+
 	}
 
 	void GameState::Draw(float dt)
@@ -358,8 +370,6 @@ namespace Fish
 		this->_data->assets.LoadTexture("Springboard Low", SPRINGBOARD_LOW);
 		this->_data->assets.LoadTexture("Springboard Medium", SPRINGBOARD_MED);
 		this->_data->assets.LoadTexture("Springboard High", SPRINGBOARD_HIGH);
-		this->_data->assets.LoadTexture("Low Springboard Collision", SPRINGBOARD_COLLISION_LOW);
-		this->_data->assets.LoadTexture("Medium Springboard Collision", SPRINGBOARD_COLLISION_MEDIUM);
 		this->_data->assets.LoadTexture("Closed Door", DOOR_CLOSED);
 		this->_data->assets.LoadTexture("Opening Door", DOOR_OPENING);
 		this->_data->assets.LoadTexture("Open Door", DOOR_OPEN);

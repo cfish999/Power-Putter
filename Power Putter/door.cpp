@@ -1,4 +1,5 @@
 #include "door.h"
+#include <iostream>
 
 namespace Fish {
 
@@ -13,36 +14,75 @@ namespace Fish {
 
 		_doorSprite.setTexture(_animationFrames.at(_animationIterator));
 
+	}
+
+	void Door::spawnDoor(int x, int y, float scaleX, float scaleY, int rotation)
+	{
 		// the position of the springboard on the window 
-		_doorSprite.setPosition(450,450);
+		sf::Sprite _doorSprite(_data->assets.GetTexture("Closed Door"));
+
+		_doorSprite.setPosition(x, y);
 		_doorSprite.setOrigin(sf::Vector2f(_doorSprite.getGlobalBounds().width / 2,
 			_doorSprite.getGlobalBounds().height / 2));
-		_doorSprite.rotate(90);
-		_doorSprite.scale(8, 8);
+		_doorSprite.scale(scaleX, scaleY);
+		_doorSprite.rotate(rotation);
 
-		_openRightDoorSprite.setTexture(this->_data->assets.GetTexture("Right Open Door"));
-		_openRightDoorSprite.setPosition(450, 450 + 130);
+		_doorSprites.push_back(_doorSprite);
+		_doorDirections.push_back(rotation);
+
+		sf::Sprite _openRightDoorSprite(_data->assets.GetTexture("Right Open Door"));
+		if (rotation == 0) {
+			_openRightDoorSprite.setPosition(x + 25, y);
+		}
+		else if (rotation == 90) {
+			_openRightDoorSprite.setPosition(x, y + 25);
+		}
+		else if (rotation == 180) {
+			_openRightDoorSprite.setPosition(x - 25, y);
+		}
+		else {
+			_openRightDoorSprite.setPosition(x, y - 25);
+		}
 		_openRightDoorSprite.setOrigin(sf::Vector2f(_openRightDoorSprite.getGlobalBounds().width / 2,
 			_openRightDoorSprite.getGlobalBounds().height / 2));
-		_openRightDoorSprite.rotate(90);
-		_openRightDoorSprite.scale(8, 8);
+		_openRightDoorSprite.scale(scaleX, scaleY);
+		_openRightDoorSprite.rotate(rotation);
 		// makes it invisible 
 		_openRightDoorSprite.setColor(sf::Color(0, 0, 0));
 
-		_openLeftDoorSprite.setTexture(this->_data->assets.GetTexture("Left Open Door"));
-		_openLeftDoorSprite.setPosition(450, 450 - 130);
+		_doorRightSprites.push_back(_openRightDoorSprite);
+
+		sf::Sprite _openLeftDoorSprite(_data->assets.GetTexture("Left Open Door"));
+		if (rotation == 0) {
+			_openLeftDoorSprite.setPosition(x - 25, y);
+		}
+		else if (rotation == 90) {
+			_openLeftDoorSprite.setPosition(x, y - 25);
+		}
+		else if (rotation == 180) {
+			_openLeftDoorSprite.setPosition(x + 25, y);
+		}
+		else {
+			_openLeftDoorSprite.setPosition(x, y + 25);
+		}
 		_openLeftDoorSprite.setOrigin(sf::Vector2f(_openLeftDoorSprite.getGlobalBounds().width / 2,
 			_openLeftDoorSprite.getGlobalBounds().height / 2));
-		_openLeftDoorSprite.rotate(90);
-		_openLeftDoorSprite.scale(8, 8);
+		_openLeftDoorSprite.scale(scaleX, scaleY);
+		_openLeftDoorSprite.rotate(rotation);
 		// makes it invisible 
 		_openLeftDoorSprite.setColor(sf::Color(0, 0, 0));
 
+		_doorLeftSprites.push_back(_openLeftDoorSprite);
 	}
 
 	void Door::Draw() {
 
-		_data->window.draw(_doorSprite);
+		for (unsigned short int i = 0; i < _doorSprites.size(); i++) {
+			_data->window.draw(_doorSprites.at(i));
+			// to resize for when I make it an 8x8 grid
+			// _data->window.draw(_doorLeftSprites.at(i));
+			// _data->window.draw(_doorRightSprites.at(i));
+		}
 	}
 
 	void Door::Animate(float dt)
@@ -75,9 +115,13 @@ namespace Fish {
 					}
 				}
 
-				// sets the current frame 
-				_doorSprite.setPosition(450, 450);
-				_doorSprite.setTexture(_animationFrames.at(_animationIterator));
+				std::cout << "hello" << std::endl;
+				// animates them all at the same time 
+				for (unsigned short int i = 0; i < _doorSprites.size(); i++) {
+					std::cout << "what" << std::endl;
+					// sets the current frame
+					_doorSprites.at(i).setTexture(_animationFrames.at(_animationIterator));
+				}
 
 				_clock.restart();
 
@@ -85,19 +129,24 @@ namespace Fish {
 		}
 	}
 
-	const sf::Sprite& Door::GetDoorSprite() const
+	const std::vector<sf::Sprite>& Door::GetSprites() const
 	{
-		return _doorSprite;
+		return _doorSprites;
 	}
 
-	const sf::Sprite& Door::GetRightOpenDoor() const
+	const std::vector<sf::Sprite>& Door::GetRightOpenDoors() const
 	{
-		return _openRightDoorSprite;
+		return _doorRightSprites;
 	}
 
-	const sf::Sprite& Door::GetLeftOpenDoor() const
+	const std::vector<sf::Sprite>& Door::GetLeftOpenDoors() const
 	{
-		return _openLeftDoorSprite;
+		return _doorLeftSprites;
+	}
+
+	const std::vector<int>& Door::GetDirections() const
+	{
+		return _doorDirections;
 	}
 
 	

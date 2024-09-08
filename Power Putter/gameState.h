@@ -63,6 +63,11 @@ namespace Fish
 		std::vector<int> springboardDirections;
 		// pointer to door object
 		Door* door;
+		std::vector<sf::Sprite> doorSprites;
+		std::vector<sf::Sprite> rightDoorSprites;
+		std::vector<sf::Sprite> leftDoorSprites;
+		std::vector<int> doorDirections;
+
 
 		Collision collision;
 
