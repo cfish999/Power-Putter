@@ -84,7 +84,6 @@ namespace Fish
 		int _directionalWind = 0;
 		int _doorState = 0;
 		float fan_strength = 0;
-		bool _effectOnBall = false;
 		bool firstClick = true;
 	};
 }

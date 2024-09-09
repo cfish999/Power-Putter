@@ -53,6 +53,7 @@
 #define FAN_3 "texture/fan_3.png"
 #define FAN_4 "texture/fan_4.png"
 #define FAN_SPIN_SPEED 0.4f
+#define FAN_STRENGTH 446
 
 // wind class
 #define WIND_LOW "texture/wind_low.png"

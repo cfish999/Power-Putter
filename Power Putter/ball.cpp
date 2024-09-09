@@ -48,7 +48,7 @@ namespace Fish {
 
 	}
 
-	void Ball::Move(float angle,sf::Vector2f speed,bool effectOnBall, int direction, float force)
+	void Ball::Move(float angle,sf::Vector2f speed)
 	{
 
 		if (_ballState == BALL_STATE_MOVING) {
@@ -56,29 +56,10 @@ namespace Fish {
 			// calculation to work out the directions it moves
 			float radians = 2 * PI * (angle / 360);
 
-			if (!effectOnBall) {
-				// it moves corresponding to the direction given and the slowdown of the natural terrain (will implement speed and different terrains soon)
-				_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown);
-				// slows down the ball over time 
-				_slowdown -= 0.01;
-
-			}
-			else {
-				// force is strength of projection
-				// 1 = up, 2 = down, 3 = right , 4 = left
-				if (direction == 1) {
-					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * force);
-				}
-				else if (direction == 2) {
-					_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * force);
-				}
-				else if (direction == 3) {
-					_ballSprite.move(speed.x * cos(radians) * force, speed.y * sin(radians) * _slowdown);
-				}
-				else {
-					_ballSprite.move(speed.x * cos(radians) * force, speed.y * sin(radians) * _slowdown);
-				}
-			}
+			// it moves corresponding to the direction given and the slowdown of the natural terrain
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown);
+			// slows down the ball over time 
+			_slowdown -= 0.005;
 
 		}
 		
@@ -92,6 +73,61 @@ namespace Fish {
 
 	}
 
+	void Ball::MovedByWind(float angle, sf::Vector2f speed, int direction)
+	{
+		// calculation to work out the directions it moves
+		float radians = 2 * PI * (angle / 360);
+
+		// 1 = up, 2 = down, 3 = right , 4 = left
+		if (direction == 1) {
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) - 10);
+		}
+		else if (direction == 2) {
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) + 10);
+		}
+		else if (direction == 3) {
+			_ballSprite.move(speed.x * cos(radians) + 10, speed.y * sin(radians) * _slowdown);
+		}
+		else {
+			_ballSprite.move(speed.x * cos(radians) - 10, speed.y * sin(radians) * _slowdown);
+		}
+	}
+
+	void Ball::CollidedWithSpringboard(float angle, sf::Vector2f speed)
+	{
+		// calculation to work out the directions it moves
+		float radians = 2 * PI * (angle / 360);
+
+		// it moves corresponding to the direction given and the slowdown of the natural terrain
+		_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) * _slowdown);
+		// springboard greatly slows it down 
+		_slowdown -= 0.4;
+
+	}
+
+
+	void Ball::BouncedOffSpringboard(float angle, sf::Vector2f speed, int direction)
+	{
+		// calculation to work out the directions it moves
+		float radians = 2 * PI * (angle / 360);
+
+		// 1 = up, 2 = down, 3 = right , 4 = left
+		if (direction == 1) {
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) - 50);
+		}
+		else if (direction == 2) {
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) + 50);
+		}
+		else if (direction == 3) {
+			_ballSprite.move(speed.x * cos(radians) + 50, speed.y * sin(radians) * _slowdown);
+		}
+		else {
+			_ballSprite.move(speed.x * cos(radians) - 50, speed.y * sin(radians) * _slowdown);
+		}
+
+		// springboard speeds it up 
+		_slowdown += 0.3;
+	}
 
 	const sf::Sprite& Ball::GetSprite() const
 	{

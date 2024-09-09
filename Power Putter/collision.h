@@ -14,7 +14,7 @@ namespace Fish {
 		bool CheckBallAndWindCollision(sf::Sprite sprite1, sf::Sprite sprite2);
 		int CheckBallAndRectangleCollision(sf::Sprite sprite1, sf::Sprite sprite2);
 		bool CheckBallAndSpringSideCollision(sf::Sprite sprite1, sf::Sprite sprite2, int direction);
-		float CheckDistanceFromFan(sf::Sprite sprite1, sf::Sprite sprite2, bool upOrDown);
+		float CheckDistanceFromFan(sf::Sprite sprite1, sf::Sprite sprite2, int direction);
 		int CheckBallAndSpringboardCollision(sf::Sprite sprite1, sf::Sprite sprite2, float width, float height);
 
 	private:

@@ -104,37 +104,33 @@ namespace Fish
 			}
 
 			for (unsigned short int i = 0; i < windSprites.size(); i++) {
-				// blows the ball upwards 
+				// blows the ball in the direction the wind is blowing  
 				if (collision.CheckBallAndWindCollision(ball->GetSprite(), windSprites.at(i))) {
-					_effectOnBall = true;
-					// fan_number will be / 2 and rounded down because of C++ nature
-					if (fanDirections.at(i) == 0 || fanDirections.at(i) == 180) {
-						fan_strength = collision.CheckDistanceFromFan(ball->GetSprite(), fanSprites.at(i), true);
+
+					if (windDirections.at(i) == 0) {
+						ball->MovedByWind(arrowAngle, powerBarSpeeds, 1);
+						if (powerBarSpeeds.y > 0.0) {
+							powerBarSpeeds.y  *= -1;
+						}
+					}
+					else if (windDirections.at(i) == 90) {
+						ball->MovedByWind(arrowAngle, powerBarSpeeds, 3);
+						if (powerBarSpeeds.x < 0.0) {
+							powerBarSpeeds.x *= -1;
+						}
+					}
+					else if (windDirections.at(i) == 180) {
+						ball->MovedByWind(arrowAngle, powerBarSpeeds, 2);
+						if (powerBarSpeeds.y < 0.0) {
+							powerBarSpeeds.y *= -1;
+						}
 					}
 					else {
-						fan_strength = collision.CheckDistanceFromFan(ball->GetSprite(), fanSprites.at(i), false);
+						ball->MovedByWind(arrowAngle, powerBarSpeeds, 4);
+						if (powerBarSpeeds.x > 0.0) {
+							powerBarSpeeds.x *= -1;
+						}
 					}
-
-					std::cout << fan_strength << std::endl;
-
-					_directionalWind = windDirections.at(i);
-					if (_directionalWind == 0) {
-						// up direction
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 1, fan_strength * 15);
-					}
-					else if (_directionalWind == 90) {
-						// right direction
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 3, fan_strength * 15);
-					}
-					else if (_directionalWind == 180) {
-						// down direction
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 2, fan_strength * 15);
-					}
-					else {
-						// left direction
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 4, fan_strength * 15);
-					}
-					_effectOnBall = false;
 				}
 			}
 
@@ -156,47 +152,46 @@ namespace Fish
 
 				if (_springboardCollided) {
 					// bounces off whatever axis it is facing and a set speed
-					_effectOnBall = true;
-					// sort out the springboard speeds
-					std::cout << "spring" << std::endl;
+					
 					// 1 = up, 2 = down, 3 = right , 4 = left
 					if (springboardDirections.at(i) == 0) {
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 1, -20);
+						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 1);
 					}
 					else if (springboardDirections.at(i) == 90) {
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 3, -20);
+						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 3);
 					}
 					else if (springboardDirections.at(i) == 180) {
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 2, -20);
+						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 2);
 					}
 					else {
-						ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 4, -20);
+						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 4);
 					}
-					_effectOnBall = false;
-				}
-			}
-
-			for (unsigned short int i = 0; i < springboardSprites.size(); i++) {
-				// smallest spring setting so no bounce just reflect 
-				if (_springSize == 0) {
-					// small collision
-					_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i),32,32);
-					
-				}
-				else if (_springSize == 1) {
-					// medium collision
-					_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i),32,32);
 				}
 				else {
-					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), springboardSprites.at(i));
-				}
-				if (_rectangleCollision == 1) {
-					// bounces in y-axis
-					Movement(_rectangleCollision);
-				}
-				else if (_rectangleCollision == 2) {
-					// bounces in x-axis
-					Movement(_rectangleCollision);
+					for (unsigned short int i = 0; i < springboardSprites.size(); i++) {
+						// smallest spring setting so no bounce just reflect 
+						if (_springSize == 0) {
+							// small collision
+							_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i), 64, 192);
+
+						}
+						else if (_springSize == 1) {
+							// medium collision
+							_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i), 64, 192);
+						}
+						else {
+							_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), springboardSprites.at(i));
+						}
+						if (_rectangleCollision == 1) {
+							// bounces in y-axis
+							powerBarSpeeds.y *= -1;
+							ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
+						}
+						else if (_rectangleCollision == 2) {
+							// bounces in x-axis
+							powerBarSpeeds.x *= -1;
+						}
+					}
 				}
 			}
 
@@ -212,7 +207,6 @@ namespace Fish
 				else {
 					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), leftDoorSprites.at(i));
 					if (_rectangleCollision > 0) {
-						std::cout << "confused" << std::endl;
 						Movement(_rectangleCollision);
 					}
 
@@ -226,7 +220,7 @@ namespace Fish
 			
 
 			// moves the ball in the direction it was aimed
-			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+			ball->Move(arrowAngle, powerBarSpeeds);
 
 		}
 
@@ -284,14 +278,14 @@ namespace Fish
 		if (axisAffected == 1) {
 			// bounces in y-axis
 			powerBarSpeeds.y *= -1;
-			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
-			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+			ball->Move(arrowAngle, powerBarSpeeds);
+			ball->Move(arrowAngle, powerBarSpeeds);
 		}
 		else {
 			// bounces in x-axis
 			powerBarSpeeds.x *= -1;
-			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
-			ball->Move(arrowAngle, powerBarSpeeds, _effectOnBall, 0, 0);
+			ball->Move(arrowAngle, powerBarSpeeds);
+			ball->Move(arrowAngle, powerBarSpeeds);
 		}
 	}
 
@@ -338,7 +332,7 @@ namespace Fish
 		springboardDirections = springboard->GetDirections();
 
 		//spawns a doors
-		door->spawnDoor(320,512,6.24,3.368,90); // right
+		door->spawnDoor(300,512,6.24,3.368,90); // right
 
 		doorSprites = door->GetSprites();
 		rightDoorSprites = door->GetRightOpenDoors();

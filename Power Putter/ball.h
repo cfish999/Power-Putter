@@ -16,7 +16,10 @@ namespace Fish {
 		void SpawnBall(int x,int y, float scaleX, float scaleY);
 		void Draw();
 		void Update(float dt);
-		void Move(float angle, sf::Vector2f speed, bool effectOnBall, int direction, float force);
+		void Move(float angle, sf::Vector2f speed);
+		void MovedByWind(float angle, sf::Vector2f speed, int direction);
+		void CollidedWithSpringboard(float angle, sf::Vector2f speed);
+		void BouncedOffSpringboard(float angle, sf::Vector2f speed, int direction);
 		const sf::Sprite& GetSprite() const;
 
 		int _ballState;

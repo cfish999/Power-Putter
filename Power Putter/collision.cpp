@@ -133,21 +133,30 @@ namespace Fish {
 		return false;
 	}
 
-	float Collision::CheckDistanceFromFan(sf::Sprite sprite1, sf::Sprite sprite2, bool upOrDown)
+	float Collision::CheckDistanceFromFan(sf::Sprite sprite1, sf::Sprite sprite2, int direction)
 	{
 		float distance = 0;
-		if (upOrDown) {
-			// in y direction ball - fan
-			distance = abs(sprite1.getGlobalBounds().getPosition().y - sprite2.getGlobalBounds().getPosition().y);
+		// ball = 1 fan = 2
+		if (direction == 1) {
+			// for up it is (fan.y - ball.y)
+			distance = sprite2.getGlobalBounds().getPosition().y - sprite1.getGlobalBounds().getPosition().y;
+		}
+		else if (direction == 2) {
+			// for down it is (ball.y - fan.y)
+			distance = sprite1.getGlobalBounds().getPosition().y - sprite2.getGlobalBounds().getPosition().y;
+		}
+		else if (direction == 3) {
+			// for right it is (ball.x - fan.x)
+			distance = sprite1.getGlobalBounds().getPosition().x - sprite2.getGlobalBounds().getPosition().x;
 		}
 		else {
-			// in x direction ball - fan
-			distance = abs(sprite1.getGlobalBounds().getPosition().x - sprite2.getGlobalBounds().getPosition().x);
+			// for left it is (fan.x - ball.x)
+			distance = sprite2.getGlobalBounds().getPosition().y - sprite1.getGlobalBounds().getPosition().y;
 		}
 
 		float fanStrength = 1 / distance;
 
-		return  fanStrength * 300;
+		return  fanStrength;
 	}
 
 	int Collision::CheckBallAndSpringboardCollision(sf::Sprite sprite1, sf::Sprite sprite2,float width, float height)
