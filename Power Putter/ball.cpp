@@ -7,18 +7,22 @@ namespace Fish {
 
 	Ball::Ball(GameDataRef data) : _data(data) {
 
-		// set the texture
 		_ballSprite.setTexture(this->_data->assets.GetTexture("Ball Sprite"));
+	}
 
+	void Ball::SpawnBall(int x, int y, float scaleX, float scaleY)
+	{
+		
 		// starting position of ball
-		_ballSprite.setPosition((_data->window.getSize().x / 4) - (_ballSprite.getGlobalBounds().width / 2),
-			(_data->window.getSize().y / 2) - (_ballSprite.getGlobalBounds().height / 2));
-
-		_ballState = BALL_STATE_STILL;
+		_ballSprite.setPosition(x, y);
 
 		// rotates around the centre of the object which is this 
 		sf::Vector2f origin = sf::Vector2f(_ballSprite.getGlobalBounds().width / 2, _ballSprite.getGlobalBounds().height / 2);
 		_ballSprite.setOrigin(origin);
+
+		_ballSprite.scale(scaleX, scaleY);
+
+		_ballState = BALL_STATE_STILL;
 
 		_rotation = 0;
 	}

@@ -107,9 +107,16 @@ namespace Fish
 				// blows the ball upwards 
 				if (collision.CheckBallAndWindCollision(ball->GetSprite(), windSprites.at(i))) {
 					_effectOnBall = true;
-					// they will have to link to their own fan done via order of fans?
-					fan_strength = collision.CheckDistanceFromFan(ball->GetSprite(), fan->GetSprite(), true);
+					// fan_number will be / 2 and rounded down because of C++ nature
+					if (fanDirections.at(i) == 0 || fanDirections.at(i) == 180) {
+						fan_strength = collision.CheckDistanceFromFan(ball->GetSprite(), fanSprites.at(i), true);
+					}
+					else {
+						fan_strength = collision.CheckDistanceFromFan(ball->GetSprite(), fanSprites.at(i), false);
+					}
+
 					std::cout << fan_strength << std::endl;
+
 					_directionalWind = windDirections.at(i);
 					if (_directionalWind == 0) {
 						// up direction
@@ -290,36 +297,67 @@ namespace Fish
 
 	void GameState::SetPositionOfComponents()
 	{
-		// sets location of 2 squares
-		squareObstacles->SpawnSquare(32, 32, 1, 1);
-		squareObstacles->SpawnSquare(992, 32, 1, 1);
+		// 1st row
+		for (int i = 2; i < 6; i++) {
+			squareObstacles->SpawnSquare(64+128*i, 64, 2, 2);
+		}
+		// 2nd row
+		squareObstacles->SpawnSquare(320,192, 2, 2);
+		squareObstacles->SpawnSquare(704, 192, 2, 2);
+		// 3rd row
+		squareObstacles->SpawnSquare(320, 320, 2, 2);
+		squareObstacles->SpawnSquare(704, 320, 2, 2);
+		// 4th row
+		squareObstacles->SpawnSquare(704, 448, 2, 2);
+		// 5th row
+		squareObstacles->SpawnSquare(704, 576, 2, 2);
+		// 6th row
+		squareObstacles->SpawnSquare(192, 704, 2, 2);
+		// 7th row
+		squareObstacles->SpawnSquare(192, 832, 2, 2);
+		// 8th row
+		for (int i = 1; i < 6; i++) {
+			squareObstacles->SpawnSquare(64+128*i, 960, 2, 2);
+		}
+
 		// stores a vector of sprites that are squares
 		squareSprites = squareObstacles->GetSprites();
 
-		// spawns 4 winds (2 sets)
-		wind->SpawnWind(96, 32, 0.64, 0.64, 90);
-		wind->SpawnWind(160, 32, 0.64, 0.64, 90);
-		wind->SpawnWind(928, 32, 0.64, 0.64, 0);
-		wind->SpawnWind(864, 32, 0.64, 0.64, 0);
+		// spawns  3 winds each covering 3 tiles vertically, 1 horizontally
+		wind->SpawnWind(448, 448, 1.28, 3.84, 180);
+		wind->SpawnWind(832, 704, 1.28, 3.84, 0);
+		wind->SpawnWind(960, 704, 1.28, 3.84, 0);
 
 		windSprites = wind->GetSprites();
 		windDirections = wind->GetDirections();
 
-		// spawns 2 springs
-		springboard->SpawnSpringboard(224, 32, 1.306, 1.641, 0);
-		springboard->SpawnSpringboard(288, 32, 1.306, 1.641, 90);
+		// spawns a springs
+		springboard->SpawnSpringboard(352, 768, 5.408, 3.7647, 90); // right
 
 		springboardSprites = springboard->GetSprites();
 		springboardDirections = springboard->GetDirections();
 
-		//spawns 2 doors
-		door->spawnDoor(352,32,1.56,1.684,0);
-		door->spawnDoor(416,32,1.56,1.684,90);
+		//spawns a doors
+		door->spawnDoor(320,512,6.24,3.368,90); // right
 
 		doorSprites = door->GetSprites();
 		rightDoorSprites = door->GetRightOpenDoors();
 		leftDoorSprites = door->GetLeftOpenDoors();
 		doorDirections = door->GetDirections();
+
+		// spawns 3 fans
+		fan->SpawnFan(448, 192, 2.56, 2.56, 180); // down
+		fan->SpawnFan(832, 960, 2.56, 2.56, 0); // up
+		fan->SpawnFan(960, 960, 2.56, 2.56, 0); // up
+
+
+		fanSprites = fan->GetSprites();
+		fanDirections = fan->GetDirections();
+
+		ball->SpawnBall(64, 512, 0.615, 0.667);
+		arrow->SpawnArrow(64, 512, 1.5, 1.5);
+		targets->SpawnTarget(896, 256);
+		powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
 
 	}
 

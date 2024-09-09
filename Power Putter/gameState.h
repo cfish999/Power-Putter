@@ -53,6 +53,8 @@ namespace Fish
 		std::vector<sf::Sprite> squareSprites;
 		// pointer to fan object
 		Fan* fan;
+		std::vector<sf::Sprite> fanSprites;
+		std::vector<int> fanDirections;
 		// pointer to wind object
 		Wind* wind;
 		std::vector<sf::Sprite> windSprites;

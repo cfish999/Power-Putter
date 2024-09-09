@@ -20,10 +20,21 @@ namespace Fish {
 		_animationFrames.push_back(_data->assets.GetTexture("Power Bar 10"));
 
 		_powerBarSprite.setTexture(_animationFrames.at(_animationIterator));
+	}
 
+	void PowerBar::SpawnPowerBar(int x, int y, float scaleX, float scaleY)
+	{
+		
 		// the position of the power bar on the window 
-		_powerBarSprite.setPosition(0, 700);
+		_powerBarSprite.setPosition(x, y);
 
+		posX = x;
+		posY = y;
+
+		sf::Vector2f origin = sf::Vector2f(_powerBarSprite.getGlobalBounds().width / 2, _powerBarSprite.getGlobalBounds().height / 2);
+		_powerBarSprite.setOrigin(origin);
+
+		_powerBarSprite.scale(scaleX, scaleY);
 	}
 
 	void PowerBar::Draw() {
@@ -57,6 +68,7 @@ namespace Fish {
 
 				// sets the current frame 
 				_powerBarSprite.setTexture(_animationFrames.at(_animationIterator));
+				_powerBarSprite.setPosition(posX,posY);
 
 				_clock.restart();
 			}

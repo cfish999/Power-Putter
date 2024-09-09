@@ -9,16 +9,19 @@ namespace Fish {
 		// set the texture
 		_arrowSprite.setTexture(this->_data->assets.GetTexture("Arrow Sprite"));
 
-		// starting position of arrow
-		_arrowSprite.setPosition((_data->window.getSize().x / 4) - (_arrowSprite.getGlobalBounds().width / 2) + 90,
-			(_data->window.getSize().y / 2) - (_arrowSprite.getGlobalBounds().height / 2) - 40 );
+	}
 
-		// scales the sprite up
-		_arrowSprite.scale(1.5, 1.5);
+	void Arrow::SpawnArrow(int x,int y,float scaleX, float scaleY)
+	{
+		// starting position of arrow
+		_arrowSprite.setPosition(x,y);
 
 		// rotates around the centre of the object which is this 
-		sf::Vector2f origin = sf::Vector2f(_arrowSprite.getGlobalBounds().width / 2, _arrowSprite.getGlobalBounds().height / 2);
+		sf::Vector2f origin = sf::Vector2f(_arrowSprite.getGlobalBounds().width / 2 - 40, _arrowSprite.getGlobalBounds().height / 2 );
 		_arrowSprite.setOrigin(origin);
+
+		// scales the sprite up
+		_arrowSprite.scale(scaleX, scaleY);
 
 		_rotation = 0;
 		_arrowState = ROTATING;

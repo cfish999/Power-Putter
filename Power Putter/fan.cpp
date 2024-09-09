@@ -14,16 +14,36 @@ namespace Fish {
 
 		_fanSprite.setTexture(_animationFrames.at(_animationIterator));
 
+	}
+
+	void Fan::SpawnFan(int x, int y, float scaleX, float scaleY, int rotation)
+	{
+		sf::Sprite _fanSprite(_data->assets.GetTexture("Fan Frame 1"));
+
 		// the position of the fan on the window 
-		_fanSprite.setPosition(500, 600);
-		_fanSprite.scale(2, 2);
+		_fanSprite.setPosition(x, y);
+
+		sf::Vector2f origin = sf::Vector2f(_fanSprite.getGlobalBounds().width / 2, _fanSprite.getGlobalBounds().height / 2);
+		_fanSprite.setOrigin(origin);
+
+		_fanSprite.scale(scaleX, scaleY);
+		_fanSprite.rotate(rotation);
+
+		// stores the fan sprite and its direction (used for later collisions)
+		_fanSprites.push_back(_fanSprite);
+		_fanDirection.push_back(rotation);
+
 
 	}
 
 	void Fan::Draw() {
 
-		_data->window.draw(_fanSprite);
+		// draws all of the fans stored in the vector 
+		for (unsigned short int i = 0; i < _fanSprites.size(); i++) {
+			_data->window.draw(_fanSprites.at(i));
+		}
 	}
+
 
 	void Fan::Animate(float dt)
 	{
@@ -39,7 +59,10 @@ namespace Fish {
 			}
 
 			// sets the current frame 
-			_fanSprite.setTexture(_animationFrames.at(_animationIterator));
+			for (unsigned short int i = 0; i < _fanSprites.size(); i++) {
+				_fanSprites.at(i).setTexture(_animationFrames.at(_animationIterator));
+			}
+
 
 			_clock.restart();
 		}
@@ -48,6 +71,16 @@ namespace Fish {
 	const sf::Sprite& Fan::GetSprite() const
 	{
 		return _fanSprite;
+	}
+
+	const std::vector<sf::Sprite>& Fan::GetSprites() const
+	{
+		return _fanSprites;
+	}
+
+	const std::vector<int>& Fan::GetDirections() const
+	{
+		return _fanDirection;
 	}
 
 }

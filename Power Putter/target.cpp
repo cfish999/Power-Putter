@@ -7,12 +7,19 @@ namespace Fish {
 		_goldTarget.setTexture(this->_data->assets.GetTexture("Gold Target"));
 		_silverTarget.setTexture(this->_data->assets.GetTexture("Silver Target"));
 		_bronzeTarget.setTexture(this->_data->assets.GetTexture("Bronze Target"));
+	}
 
-		// figure a way out to automate the difference in positions 
-		_goldTarget.setPosition(538,540);
-		_silverTarget.setPosition(518,520);
-		_bronzeTarget.setPosition(500,500);
-
+	void Target::SpawnTarget(int x, int y)
+	{
+		_goldTarget.setPosition(x, y);
+		sf::Vector2f origin = sf::Vector2f(_goldTarget.getGlobalBounds().width / 2, _goldTarget.getGlobalBounds().height / 2);
+		_goldTarget.setOrigin(origin);
+		_silverTarget.setPosition(x, y);
+		origin = sf::Vector2f(_silverTarget.getGlobalBounds().width / 2, _silverTarget.getGlobalBounds().height / 2);
+		_silverTarget.setOrigin(origin);
+		_bronzeTarget.setPosition(x, y);
+		origin = sf::Vector2f(_bronzeTarget.getGlobalBounds().width / 2, _bronzeTarget.getGlobalBounds().height / 2);
+		_bronzeTarget.setOrigin(origin);
 	}
 
 	void Target::Draw()

@@ -13,6 +13,7 @@ namespace Fish {
 
 		PowerBar(GameDataRef data);
 
+		void SpawnPowerBar(int x, int y, float scaleX, float scaleY);
 		void Draw();
 		void Animate(float dt);
 		float GetSpeed();
@@ -28,6 +29,8 @@ namespace Fish {
 		unsigned int _animationIterator;
 		bool rising = true;
 		bool powerBarNeeded = true;
+		int posY = 0;
+		int posX = 0;
 
 		sf::Clock _clock;
 		sf::Clock _movementClock;

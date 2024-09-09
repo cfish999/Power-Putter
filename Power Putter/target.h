@@ -13,6 +13,7 @@ namespace Fish {
 
 		Target(GameDataRef data);
 
+		void SpawnTarget(int x, int y);
 		void Draw();
 		const sf::Sprite& GetBronzeSprite() const;
 		const sf::Sprite& GetSilverSprite() const;

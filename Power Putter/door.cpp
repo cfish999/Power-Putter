@@ -32,16 +32,16 @@ namespace Fish {
 
 		sf::Sprite _openRightDoorSprite(_data->assets.GetTexture("Right Open Door"));
 		if (rotation == 0) {
-			_openRightDoorSprite.setPosition(x + 25, y);
+			_openRightDoorSprite.setPosition(x + 105, y);
 		}
 		else if (rotation == 90) {
-			_openRightDoorSprite.setPosition(x, y + 25);
+			_openRightDoorSprite.setPosition(x, y + 105);
 		}
 		else if (rotation == 180) {
-			_openRightDoorSprite.setPosition(x - 25, y);
+			_openRightDoorSprite.setPosition(x - 105, y);
 		}
 		else {
-			_openRightDoorSprite.setPosition(x, y - 25);
+			_openRightDoorSprite.setPosition(x, y - 105);
 		}
 		_openRightDoorSprite.setOrigin(sf::Vector2f(_openRightDoorSprite.getGlobalBounds().width / 2,
 			_openRightDoorSprite.getGlobalBounds().height / 2));
@@ -54,16 +54,16 @@ namespace Fish {
 
 		sf::Sprite _openLeftDoorSprite(_data->assets.GetTexture("Left Open Door"));
 		if (rotation == 0) {
-			_openLeftDoorSprite.setPosition(x - 25, y);
+			_openLeftDoorSprite.setPosition(x - 105, y);
 		}
 		else if (rotation == 90) {
-			_openLeftDoorSprite.setPosition(x, y - 25);
+			_openLeftDoorSprite.setPosition(x, y - 105);
 		}
 		else if (rotation == 180) {
-			_openLeftDoorSprite.setPosition(x + 25, y);
+			_openLeftDoorSprite.setPosition(x + 105, y);
 		}
 		else {
-			_openLeftDoorSprite.setPosition(x, y + 25);
+			_openLeftDoorSprite.setPosition(x, y + 105);
 		}
 		_openLeftDoorSprite.setOrigin(sf::Vector2f(_openLeftDoorSprite.getGlobalBounds().width / 2,
 			_openLeftDoorSprite.getGlobalBounds().height / 2));

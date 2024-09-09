@@ -13,6 +13,7 @@ namespace Fish {
 
 		Ball(GameDataRef data);
 
+		void SpawnBall(int x,int y, float scaleX, float scaleY);
 		void Draw();
 		void Update(float dt);
 		void Move(float angle, sf::Vector2f speed, bool effectOnBall, int direction, float force);
