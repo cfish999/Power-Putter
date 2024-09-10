@@ -76,7 +76,7 @@ namespace Fish
 		int _gameState;
 		int _defaultSpeed = 10;
 		int _medalTier = 0;
-		int _attempts = 3;
+		int _attempts = 10;
 		int _squareCollision = 0;
 		bool _springboardCollided = false;
 		int _springSize = 0;
@@ -85,5 +85,7 @@ namespace Fish
 		int _doorState = 0;
 		float fan_strength = 0;
 		bool firstClick = true;
+
+		sf::Clock _dullClock;
 	};
 }

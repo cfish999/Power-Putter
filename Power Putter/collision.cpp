@@ -8,20 +8,18 @@ namespace Fish {
 
 	}
 
-	bool Collision::CheckTargetAndBallCollision(sf::Sprite sprite1, sf::Sprite sprite2) {
-		sf::Rect<float> rect1 = sprite1.getGlobalBounds();
-		sf::Rect<float> rect2 = sprite2.getGlobalBounds();
-
+	bool Collision::CheckTargetAndBallCollision(sf::Sprite sprite1, sf::Sprite sprite2, float radiusTarget, float radiusBall) {
 		
+		// uses cirlce collision to detect hitting the target
+		sf::Vector2f distance(sprite1.getPosition().x - sprite2.getPosition().x, sprite1.getPosition().y - sprite2.getPosition().y);
+		float distanceSquared = (distance.x * distance.x) + (distance.y * distance.y);
 
-		// if the centre of the ball is between the top of the target height and bottom
-		if (rect1.getPosition().x < rect2.getPosition().x + (rect2.height / 2) && rect1.getPosition().x > rect2.getPosition().x - (rect2.height / 2)) {
-			// if the centre of the ball is between the rightmost of the target width and leftmost of the target width
-			if (rect1.getPosition().y < rect2.getPosition().y + (rect2.width / 2) && rect1.getPosition().y > rect2.getPosition().y - (rect2.width / 2)) {
-				return true;
-			}
+		float radius = (radiusTarget + radiusBall) * (radiusTarget + radiusBall);
+
+		// circles have overlapped i.e ball has landed on the target
+		if (distanceSquared < radius) {
+			return true;
 		}
-
 		return false;
 		
 		

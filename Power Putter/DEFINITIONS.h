@@ -34,7 +34,7 @@
 #define POWER_BAR_FRAME9 "texture/power_bar9.png"
 #define POWER_BAR_FRAME10 "texture/power_bar10.png"
 
-#define POWER_BAR_DURATION 2.0f
+#define POWER_BAR_DURATION 1.0f
 
 // target class
 #define GOLD_TARGET "texture/gold.png"
@@ -69,6 +69,8 @@
 // spring board springs every 3 seconds
 #define SPRINGBOARD_MOVE 3.0f
 #define SPRINGBOARD_ANIMATION 0.8f
+// every 1/4 of a second the ball can be slowed down by a springboard
+#define SPRINGBOARD_SLOWDOWN 0.25f
 
 // door class
 #define DOOR_CLOSED "texture/door_closed.png"

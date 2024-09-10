@@ -108,28 +108,28 @@ namespace Fish
 				if (collision.CheckBallAndWindCollision(ball->GetSprite(), windSprites.at(i))) {
 
 					if (windDirections.at(i) == 0) {
-						ball->MovedByWind(arrowAngle, powerBarSpeeds, 1);
 						if (powerBarSpeeds.y > 0.0) {
-							powerBarSpeeds.y  *= -1;
+							powerBarSpeeds.y *= -1;
 						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 1);
 					}
 					else if (windDirections.at(i) == 90) {
-						ball->MovedByWind(arrowAngle, powerBarSpeeds, 3);
 						if (powerBarSpeeds.x < 0.0) {
 							powerBarSpeeds.x *= -1;
 						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 3);
 					}
 					else if (windDirections.at(i) == 180) {
-						ball->MovedByWind(arrowAngle, powerBarSpeeds, 2);
 						if (powerBarSpeeds.y < 0.0) {
 							powerBarSpeeds.y *= -1;
 						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 2);
 					}
 					else {
-						ball->MovedByWind(arrowAngle, powerBarSpeeds, 4);
 						if (powerBarSpeeds.x > 0.0) {
 							powerBarSpeeds.x *= -1;
 						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 4);
 					}
 				}
 			}
@@ -155,16 +155,16 @@ namespace Fish
 					
 					// 1 = up, 2 = down, 3 = right , 4 = left
 					if (springboardDirections.at(i) == 0) {
-						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 1);
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 1);
 					}
 					else if (springboardDirections.at(i) == 90) {
-						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 3);
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 3);
 					}
 					else if (springboardDirections.at(i) == 180) {
-						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 2);
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 2);
 					}
 					else {
-						ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 4);
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 4);
 					}
 				}
 				else {
@@ -182,14 +182,19 @@ namespace Fish
 						else {
 							_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), springboardSprites.at(i));
 						}
-						if (_rectangleCollision == 1) {
-							// bounces in y-axis
-							powerBarSpeeds.y *= -1;
-							ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
-						}
-						else if (_rectangleCollision == 2) {
-							// bounces in x-axis
-							powerBarSpeeds.x *= -1;
+						if (_dullClock.getElapsedTime().asSeconds() > SPRINGBOARD_SLOWDOWN) {
+							if (_rectangleCollision == 1) {
+								// bounces in y-axis
+								powerBarSpeeds.y *= -1;
+								ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
+								_dullClock.restart();
+							}
+							else if (_rectangleCollision == 2) {
+								// bounces in x-axis
+								powerBarSpeeds.x *= -1;
+								ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
+								_dullClock.restart();
+							}
 						}
 					}
 				}
@@ -229,19 +234,22 @@ namespace Fish
 			
 			// must be ball then target for sprites to work for collision
 			// the following sets the players best medal out of their 3 tries
-			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetGoldSprite())) {
+			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetGoldSprite(), 
+				targets->GoldRadius(), ball->getBallRadius())) {
 				std::cout << "gold medal" << std::endl;
 				_medalTier = 3;
 				// straight to the next level if gold medal is achieved first or second try
 				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier)), true);
 			}
-			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite())) {
+			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite(),
+				targets->SilverRadius(), ball->getBallRadius())) {
 				std::cout << "silver medal" << std::endl;
 				if (_medalTier < 2) {
 					_medalTier = 2;
 				}
 			}
-			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetBronzeSprite())) {
+			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetBronzeSprite(),
+				targets->BronzeRadius(), ball->getBallRadius())) {
 				std::cout << "bronze medal" << std::endl;
 				if (_medalTier < 1) {
 					_medalTier = 1;
@@ -304,7 +312,7 @@ namespace Fish
 		// 4th row
 		squareObstacles->SpawnSquare(704, 448, 2, 2);
 		// 5th row
-		squareObstacles->SpawnSquare(704, 576, 2, 2);
+		squareObstacles->SpawnSquare(704, 560, 2, 2);
 		// 6th row
 		squareObstacles->SpawnSquare(192, 704, 2, 2);
 		// 7th row
@@ -350,7 +358,7 @@ namespace Fish
 
 		ball->SpawnBall(64, 512, 0.615, 0.667);
 		arrow->SpawnArrow(64, 512, 1.5, 1.5);
-		targets->SpawnTarget(896, 256);
+		targets->SpawnTarget(896,384,1.5,1.5);
 		powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
 
 	}

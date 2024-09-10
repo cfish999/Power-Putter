@@ -8,7 +8,7 @@ namespace Fish {
 	public:
 		Collision();
 
-		bool CheckTargetAndBallCollision(sf::Sprite sprite1, sf::Sprite sprite2);
+		bool CheckTargetAndBallCollision(sf::Sprite sprite1, sf::Sprite sprite2, float radiusTarget, float radiusBall);
 		bool CheckBoundAreaAndBallCollision(sf::Sprite sprite1, sf::Vector2f window);
 		int CheckBallAndSquareCollision(sf::Sprite sprite1, sf::Sprite sprite2);
 		bool CheckBallAndWindCollision(sf::Sprite sprite1, sf::Sprite sprite2);
