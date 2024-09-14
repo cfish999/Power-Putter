@@ -6,8 +6,10 @@
 #define PI 3.14
 
 // main menu screen
-#define MAIN_MENU_BACKGROUND "texture/background.jpg"
+#define MAIN_MENU_BACKGROUND "texture/game_background.png"
 #define PLAY_BUTTON "texture/play_button.png"
+#define HOME_BUTTON "texture/home_button.png"
+#define RETRY "texture/retry_button.png"
 
 // ball class
 #define BALL_FRAME_FILEPATH "texture/ball_up.png"
@@ -45,7 +47,8 @@
 #define GAME_OVER_TITLE "texture/game_over_title.png"
 
 // square obstacle class
-#define SQUARE_OBSTACLE "texture/square.png"
+#define WALL_MAIN "texture/wall_main.png"
+#define WALL_DANGER "texture/wall_danger.png"
 
 // fan class
 #define FAN_1 "texture/fan_1.png"
@@ -73,11 +76,11 @@
 #define SPRINGBOARD_SLOWDOWN 0.25f
 
 // door class
-#define DOOR_CLOSED "texture/door_closed.png"
-#define DOOR_OPENING "texture/door_opening.png"
-#define DOOR_OPEN "texture/door_open.png"
-#define RIGHT_OPEN_DOOR "texture/door_open_right.png"
-#define LEFT_OPEN_DOOR "texture/door_open_left.png"
+#define DOOR_CLOSED "texture/closed_door.png"
+#define DOOR_OPENING "texture/opening_door.png"
+#define DOOR_OPEN "texture/opened_door.png"
+#define RIGHT_OPEN_DOOR "texture/right_open_door.png"
+#define LEFT_OPEN_DOOR "texture/left_open_door.png"
 // door opens and closes every 4 seconds
 #define DOOR_TIMER 4.0f
 #define DOOR_ANIMATION 0.3f

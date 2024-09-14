@@ -39,6 +39,16 @@ namespace Fish
 
 		// at the minute we are reusing the background asset as we have not created a game screen background yet 
 		_background.setTexture(this->_data->assets.GetTexture("Main Menu Background"));
+		
+		this->_data->assets.LoadTexture("Home Button", HOME_BUTTON);
+		// set the texture
+		_homeButton.setTexture(this->_data->assets.GetTexture("Home Button"));
+		_homeButton.setPosition(64,64);
+
+		// stops the home button enlarging after every attempt 
+		if (_homeButton.getScale().x != 3) {
+			_homeButton.scale(3, 3);
+		}
 
 	}
 
@@ -51,6 +61,11 @@ namespace Fish
 			if (sf::Event::Closed == event.type)
 			{
 				this->_data->window.close();
+			}
+
+			// checks when the home button has been clicked
+			if (_data->input.IsSpriteClicked(_homeButton, sf::Mouse::Left, _data->window)) {
+				_data->machine.AddState(StateRef(new MainMenuState(_data)));
 			}
 
 			// check when the background has been clicked 
@@ -71,6 +86,7 @@ namespace Fish
 					powerBarSpeeds = powerBarVelocity;
 				}
 			}
+
 		}
 	}
 
@@ -301,25 +317,25 @@ namespace Fish
 	{
 		// 1st row
 		for (int i = 2; i < 6; i++) {
-			squareObstacles->SpawnSquare(64+128*i, 64, 2, 2);
+			squareObstacles->SpawnSquare(64+128*i, 64, 1, 1,1);
 		}
 		// 2nd row
-		squareObstacles->SpawnSquare(320,192, 2, 2);
-		squareObstacles->SpawnSquare(704, 192, 2, 2);
+		squareObstacles->SpawnSquare(320,192, 1, 1,1);
+		squareObstacles->SpawnSquare(704, 192, 1, 1,2);
 		// 3rd row
-		squareObstacles->SpawnSquare(320, 320, 2, 2);
-		squareObstacles->SpawnSquare(704, 320, 2, 2);
+		squareObstacles->SpawnSquare(320, 320, 1, 1,1);
+		squareObstacles->SpawnSquare(704, 320, 1, 1,1);
 		// 4th row
-		squareObstacles->SpawnSquare(704, 448, 2, 2);
+		squareObstacles->SpawnSquare(704, 448, 1, 1,1);
 		// 5th row
-		squareObstacles->SpawnSquare(704, 560, 2, 2);
+		squareObstacles->SpawnSquare(704, 560, 1, 1,2);
 		// 6th row
-		squareObstacles->SpawnSquare(192, 704, 2, 2);
+		squareObstacles->SpawnSquare(192, 704, 1, 1,2);
 		// 7th row
-		squareObstacles->SpawnSquare(192, 832, 2, 2);
+		squareObstacles->SpawnSquare(192, 832, 1, 1,1);
 		// 8th row
 		for (int i = 1; i < 6; i++) {
-			squareObstacles->SpawnSquare(64+128*i, 960, 2, 2);
+			squareObstacles->SpawnSquare(64+128*i, 960, 1, 1,1);
 		}
 
 		// stores a vector of sprites that are squares
@@ -378,6 +394,7 @@ namespace Fish
 		wind->Draw();
 		springboard->Draw();
 		door->Draw();
+		this->_data->window.draw(this->_homeButton);
 
 		this->_data->window.display();
 	}
@@ -400,7 +417,8 @@ namespace Fish
 		this->_data->assets.LoadTexture("Gold Target", GOLD_TARGET);
 		this->_data->assets.LoadTexture("Silver Target", SILVER_TARGET);
 		this->_data->assets.LoadTexture("Bronze Target", BRONZE_TARGET);
-		this->_data->assets.LoadTexture("Square", SQUARE_OBSTACLE);
+		this->_data->assets.LoadTexture("Wall Main", WALL_MAIN);
+		this->_data->assets.LoadTexture("Wall Danger", WALL_DANGER);
 		this->_data->assets.LoadTexture("Fan Frame 1", FAN_1);
 		this->_data->assets.LoadTexture("Fan Frame 2", FAN_2);
 		this->_data->assets.LoadTexture("Fan Frame 3", FAN_3);

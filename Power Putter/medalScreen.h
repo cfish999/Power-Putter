@@ -22,6 +22,8 @@ namespace Fish
 
 		sf::Sprite _background;
 		sf::Sprite _gameOverTitle;
+		sf::Sprite _homeButton;
+		sf::Sprite _retry;
 
 		int _medalLevel;
 

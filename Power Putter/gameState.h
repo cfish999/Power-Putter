@@ -36,6 +36,8 @@ namespace Fish
 		GameDataRef _data;
 
 		sf::Sprite _background;
+		std::vector<sf::Sprite> _backgroundSprites;
+		sf::Sprite _homeButton;
 
 		// pointer to a ball object
 		Ball* ball;
@@ -76,7 +78,7 @@ namespace Fish
 		int _gameState;
 		int _defaultSpeed = 10;
 		int _medalTier = 0;
-		int _attempts = 10;
+		int _attempts = 1;
 		int _squareCollision = 0;
 		bool _springboardCollided = false;
 		int _springSize = 0;
