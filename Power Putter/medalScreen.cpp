@@ -28,16 +28,17 @@ namespace Fish
 		_retry.setTexture(this->_data->assets.GetTexture("Retry"));
 
 		// centres it
-		_gameOverTitle.setPosition(_data->window.getSize().x / 2 - _gameOverTitle.getGlobalBounds().width / 2,
+		_gameOverTitle.setPosition(_data->window.getSize().x / 2.25 - _gameOverTitle.getGlobalBounds().width / 2,
 			_data->window.getSize().y / 2 - _gameOverTitle.getGlobalBounds().height / 2);
 
 		if (_homeButton.getScale().x != 3) {
 			_homeButton.scale(3, 3);
 			_retry.scale(3, 3);
+			_gameOverTitle.scale(3, 3);
 		}
 
 		_homeButton.setPosition(64, 64);
-		_retry.setPosition(860, 64);
+		_retry.setPosition(794, 64);
 
 	}
 

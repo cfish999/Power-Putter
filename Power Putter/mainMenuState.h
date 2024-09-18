@@ -23,6 +23,7 @@ namespace Fish
 
 		sf::Sprite _background;
 		sf::Sprite _title;
+		sf::Sprite _levelSelect;
 		sf::Sprite _playButton;
 	};
 }

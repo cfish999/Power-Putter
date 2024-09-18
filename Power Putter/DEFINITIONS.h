@@ -7,6 +7,7 @@
 
 // main menu screen
 #define MAIN_MENU_BACKGROUND "texture/game_background.png"
+#define LEVEL_SELECT "texture/level_select.png"
 #define PLAY_BUTTON "texture/play_button.png"
 #define HOME_BUTTON "texture/home_button.png"
 #define RETRY "texture/retry_button.png"
