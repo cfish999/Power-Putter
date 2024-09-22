@@ -21,7 +21,7 @@ namespace Fish
 	class GameState : public State
 	{
 	public:
-		GameState(GameDataRef data);
+		GameState(GameDataRef data,int currentLevel);
 
 		void Init();
 
@@ -29,7 +29,7 @@ namespace Fish
 		void Update(float dt);
 		void Draw(float dt);
 		void Movement(int axisAffected);
-		void SetPositionOfComponents();
+		void SetPositionOfComponents(int levelSelect);
 		void LoadTextures();
 
 	private:
@@ -75,6 +75,7 @@ namespace Fish
 
 		Collision collision;
 
+		int _currentLevel;
 		int _gameState;
 		int _defaultSpeed = 10;
 		int _medalTier = 0;

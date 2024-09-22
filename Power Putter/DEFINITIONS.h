@@ -5,12 +5,17 @@
 
 #define PI 3.14
 
-// main menu screen
+// menu screen buttons
 #define MAIN_MENU_BACKGROUND "texture/game_background.png"
 #define LEVEL_SELECT "texture/level_select.png"
 #define PLAY_BUTTON "texture/play_button.png"
 #define HOME_BUTTON "texture/home_button.png"
 #define RETRY "texture/retry_button.png"
+#define GAME_TITLE "texture/game_title.png"
+#define LEVEL1 "texture/level1.png"
+#define LEVEL2 "texture/level2.png"
+#define LEVEL3 "texture/level3.png"
+#define SELECT_LEVEL "texture/select_level.png"
 
 // ball class
 #define BALL_FRAME_FILEPATH "texture/ball_up.png"

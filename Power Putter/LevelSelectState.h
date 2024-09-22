@@ -6,27 +6,28 @@
 
 namespace Fish
 {
-	class medalScreen : public State
+	// inherits from state
+	class LevelSelectState : public State
 	{
 	public:
-		medalScreen(GameDataRef data, int medalLevel, int lastLevelPlayed);
+		LevelSelectState(GameDataRef data); // constructor
 
 		void Init();
-
 		void HandleInput();
 		void Update(float dt);
 		void Draw(float dt);
+
+		int currentLevel = 0;
 
 	private:
 		GameDataRef _data;
 
 		sf::Sprite _background;
-		sf::Sprite _gameOverTitle;
+		sf::Sprite _selectLevel;
+		sf::Sprite _levelSelect;
+		sf::Sprite _level1;
+		sf::Sprite _level2;
+		sf::Sprite _level3;
 		sf::Sprite _homeButton;
-		sf::Sprite _retry;
-
-		int _medalLevel;
-		int _lastLevelPlayed;
-
 	};
 }

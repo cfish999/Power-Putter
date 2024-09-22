@@ -110,7 +110,6 @@ namespace Fish {
 		float radians = 2 * PI * (angle / 360);
 
 		// springboard greatly slows it down 
-		// slowdown does not work atm 
 		_slowdown -= 0.2;
 		std::cout << _slowdown << std::endl;
 
@@ -126,27 +125,27 @@ namespace Fish {
 		float radians = 2 * PI * (angle / 360);
 
 		// springboard speeds it up 
-		_slowdown += 0.1;
+		_slowdown += 0.05;
 
 		// 1 = up, 2 = down, 3 = right , 4 = left
 		if (direction == 1) {
-			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) - 12);
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) - 10);
 			speeds.x = (speed.x * cos(radians));
-			speeds.y = (speed.y * sin(radians) - 12);
+			speeds.y = (speed.y * sin(radians) - 10);
 		}
 		else if (direction == 2) {
-			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) + 12);
+			_ballSprite.move(speed.x * cos(radians) * _slowdown, speed.y * sin(radians) + 10);
 			speeds.x = (speed.x * cos(radians));
-			speeds.y = (speed.y * sin(radians) + 12);
+			speeds.y = (speed.y * sin(radians) + 10);
 		}
 		else if (direction == 3) {
-			_ballSprite.move(speed.x * cos(radians) + 12, speed.y * sin(radians) * _slowdown);
-			speeds.x = (speed.x * cos(radians) + 12);
+			_ballSprite.move(speed.x * cos(radians) + 10, speed.y * sin(radians) * _slowdown);
+			speeds.x = (speed.x * cos(radians) + 10);
 			speeds.y = (speed.y * sin(radians));
 		}
 		else {
-			_ballSprite.move(speed.x * cos(radians) - 12, speed.y * sin(radians) * _slowdown);
-			speeds.x = (speed.x * cos(radians) - 12);
+			_ballSprite.move(speed.x * cos(radians) - 10, speed.y * sin(radians) * _slowdown);
+			speeds.x = (speed.x * cos(radians) - 10);
 			speeds.y = (speed.y * sin(radians));
 		}
 

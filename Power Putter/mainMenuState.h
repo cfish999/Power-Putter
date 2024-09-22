@@ -13,10 +13,11 @@ namespace Fish
 		MainMenuState(GameDataRef data); // constructor
 
 		void Init();
-
 		void HandleInput();
 		void Update(float dt);
 		void Draw(float dt);
+
+		int currentLevel = 0;
 
 	private:
 		GameDataRef _data;
@@ -25,5 +26,6 @@ namespace Fish
 		sf::Sprite _title;
 		sf::Sprite _levelSelect;
 		sf::Sprite _playButton;
+		sf::Sprite _gameTitle;
 	};
 }

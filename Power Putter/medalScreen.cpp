@@ -9,10 +9,8 @@
 
 namespace Fish
 {
-	medalScreen::medalScreen(GameDataRef data, int medalLevel) : _data(data), _medalLevel(medalLevel)
-	{
-
-	}
+	medalScreen::medalScreen(GameDataRef data, int medalLevel, int lastLevelPlayed) : _data(data), _medalLevel(medalLevel) ,
+		_lastLevelPlayed(lastLevelPlayed) {}
 
 	void medalScreen::Init()
 	{
@@ -59,7 +57,7 @@ namespace Fish
 			}
 			// checks when the home button has been clicked
 			if (_data->input.IsSpriteClicked(_retry, sf::Mouse::Left, _data->window)) {
-				_data->machine.AddState(StateRef(new GameState(_data)));
+				_data->machine.AddState(StateRef(new GameState(_data,_lastLevelPlayed)));
 			}
 		}
 	}

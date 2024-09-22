@@ -15,10 +15,7 @@
 
 namespace Fish
 {
-	GameState::GameState(GameDataRef data) : _data(data)
-	{
-
-	}
+	GameState::GameState(GameDataRef data, int currentLevel) : _data(data), _currentLevel(currentLevel) {}
 
 	void GameState::Init()
 	{
@@ -35,9 +32,8 @@ namespace Fish
 		springboard = new Springboard(_data);
 		door = new Door(_data);
 
-		SetPositionOfComponents();
+		SetPositionOfComponents(_currentLevel);
 
-		// at the minute we are reusing the background asset as we have not created a game screen background yet 
 		_background.setTexture(this->_data->assets.GetTexture("Main Menu Background"));
 		
 		this->_data->assets.LoadTexture("Home Button", HOME_BUTTON);
@@ -255,7 +251,7 @@ namespace Fish
 				std::cout << "gold medal" << std::endl;
 				_medalTier = 3;
 				// straight to the next level if gold medal is achieved first or second try
-				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier)), true);
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel)), true);
 			}
 			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite(),
 				targets->SilverRadius(), ball->getBallRadius())) {
@@ -285,7 +281,7 @@ namespace Fish
 			
 			// when all attempts have been used up go to the medal screen 
 			if (_attempts == 0) {
-				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier)), true);
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel)), true);
 			}
 			else {
 				// resets the screen for future attempts 
@@ -313,69 +309,93 @@ namespace Fish
 		}
 	}
 
-	void GameState::SetPositionOfComponents()
+	void GameState::SetPositionOfComponents(int levelSelect)
 	{
-		// 1st row
-		for (int i = 2; i < 6; i++) {
-			squareObstacles->SpawnSquare(64+128*i, 64, 1, 1,1);
-		}
-		// 2nd row
-		squareObstacles->SpawnSquare(320,192, 1, 1,1);
-		squareObstacles->SpawnSquare(704, 192, 1, 1,2);
-		// 3rd row
-		squareObstacles->SpawnSquare(320, 320, 1, 1,1);
-		squareObstacles->SpawnSquare(704, 320, 1, 1,1);
-		// 4th row
-		squareObstacles->SpawnSquare(704, 448, 1, 1,1);
-		// 5th row
-		squareObstacles->SpawnSquare(704, 560, 1, 1,2);
-		// 6th row
-		squareObstacles->SpawnSquare(192, 704, 1, 1,2);
-		// 7th row
-		squareObstacles->SpawnSquare(192, 832, 1, 1,1);
-		// 8th row
-		for (int i = 1; i < 6; i++) {
-			squareObstacles->SpawnSquare(64+128*i, 960, 1, 1,1);
-		}
-
-		// stores a vector of sprites that are squares
-		squareSprites = squareObstacles->GetSprites();
-
-		// spawns  3 winds each covering 3 tiles vertically, 1 horizontally
-		wind->SpawnWind(448, 448, 1.28, 3.84, 180);
-		wind->SpawnWind(832, 704, 1.28, 3.84, 0);
-		wind->SpawnWind(960, 704, 1.28, 3.84, 0);
-
-		windSprites = wind->GetSprites();
-		windDirections = wind->GetDirections();
-
-		// spawns a springs
-		springboard->SpawnSpringboard(352, 768, 5.408, 3.7647, 90); // right
-
-		springboardSprites = springboard->GetSprites();
-		springboardDirections = springboard->GetDirections();
-
-		//spawns a doors
-		door->spawnDoor(300,512,6.24,3.368,90); // right
-
-		doorSprites = door->GetSprites();
-		rightDoorSprites = door->GetRightOpenDoors();
-		leftDoorSprites = door->GetLeftOpenDoors();
-		doorDirections = door->GetDirections();
-
-		// spawns 3 fans
-		fan->SpawnFan(448, 192, 2.56, 2.56, 180); // down
-		fan->SpawnFan(832, 960, 2.56, 2.56, 0); // up
-		fan->SpawnFan(960, 960, 2.56, 2.56, 0); // up
-
-
-		fanSprites = fan->GetSprites();
-		fanDirections = fan->GetDirections();
 
 		ball->SpawnBall(64, 512, 0.615, 0.667);
 		arrow->SpawnArrow(64, 512, 1.5, 1.5);
-		targets->SpawnTarget(896,384,1.5,1.5);
+		targets->SpawnTarget(896, 384, 1.5, 1.5);
 		powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
+
+		// level 1
+		if (levelSelect == 1) {
+
+			// 1st row
+			for (int i = 2; i < 6; i++) {
+				squareObstacles->SpawnSquare(64 + 128 * i, 64, 1, 1, 1);
+			}
+			// 2nd row
+			squareObstacles->SpawnSquare(320, 192, 1, 1, 1);
+			squareObstacles->SpawnSquare(704, 192, 1, 1, 2);
+			// 3rd row
+			squareObstacles->SpawnSquare(320, 320, 1, 1, 1);
+			squareObstacles->SpawnSquare(704, 320, 1, 1, 1);
+			// 4th row
+			squareObstacles->SpawnSquare(704, 448, 1, 1, 1);
+			// 5th row
+			squareObstacles->SpawnSquare(704, 560, 1, 1, 2);
+			// 6th row
+			squareObstacles->SpawnSquare(192, 704, 1, 1, 2);
+			// 7th row
+			squareObstacles->SpawnSquare(192, 832, 1, 1, 1);
+			// 8th row
+			for (int i = 1; i < 6; i++) {
+				squareObstacles->SpawnSquare(64 + 128 * i, 960, 1, 1, 1);
+			}
+
+			// stores a vector of sprites that are squares
+			squareSprites = squareObstacles->GetSprites();
+
+			// spawns  3 winds each covering 3 tiles vertically, 1 horizontally
+			wind->SpawnWind(448, 448, 1.28, 3.84, 180);
+			wind->SpawnWind(832, 704, 1.28, 3.84, 0);
+			wind->SpawnWind(960, 704, 1.28, 3.84, 0);
+
+			windSprites = wind->GetSprites();
+			windDirections = wind->GetDirections();
+
+			// spawns a springs
+			springboard->SpawnSpringboard(352, 768, 5.408, 3.7647, 90); // right
+
+			springboardSprites = springboard->GetSprites();
+			springboardDirections = springboard->GetDirections();
+
+			//spawns a doors
+			door->spawnDoor(300, 512, 6.24, 3.368, 90); // right
+
+			doorSprites = door->GetSprites();
+			rightDoorSprites = door->GetRightOpenDoors();
+			leftDoorSprites = door->GetLeftOpenDoors();
+			doorDirections = door->GetDirections();
+
+			// spawns 3 fans
+			fan->SpawnFan(448, 192, 2.56, 2.56, 180); // down
+			fan->SpawnFan(832, 960, 2.56, 2.56, 0); // up
+			fan->SpawnFan(960, 960, 2.56, 2.56, 0); // up
+
+
+			fanSprites = fan->GetSprites();
+			fanDirections = fan->GetDirections();
+		}
+		else if(levelSelect == 2) {
+			// 1st row
+			for (int i = 2; i < 6; i++) {
+				squareObstacles->SpawnSquare(64 + 128 * i, 64, 1, 1, 1);
+			}
+		}
+		else if (levelSelect == 3) {
+
+			// spawns  3 winds each covering 3 tiles vertically, 1 horizontally
+			wind->SpawnWind(448, 448, 1.28, 3.84, 180);
+			wind->SpawnWind(832, 704, 1.28, 3.84, 0);
+			wind->SpawnWind(960, 704, 1.28, 3.84, 0);
+
+			windSprites = wind->GetSprites();
+			windDirections = wind->GetDirections();
+		}
+		else {
+			std::cout << "No More Levels!" << std::endl;
+		}
 
 	}
 
@@ -398,7 +418,6 @@ namespace Fish
 
 		this->_data->window.display();
 	}
-
 
 	void GameState::LoadTextures()
 	{
