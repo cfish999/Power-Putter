@@ -32,6 +32,7 @@ namespace Fish
 		springboard = new Springboard(_data);
 		door = new Door(_data);
 
+
 		SetPositionOfComponents(_currentLevel);
 
 		_background.setTexture(this->_data->assets.GetTexture("Main Menu Background"));
@@ -46,6 +47,46 @@ namespace Fish
 			_homeButton.scale(3, 3);
 		}
 
+		if (!_shotFont.loadFromFile("fonts/Midnight.otf")) {
+			std::cerr << "Could  not load font" << std::endl;
+			exit(-1);
+		}
+
+		// Showcasing the requirements for the stars
+		_goldString = "Gold Star: ";
+		_silverString = "Silver Star: ";
+		_bronzeString = "Bronze Star: ";
+		if (_currentLevel == 1) {
+			_goldString += std::to_string(GOLD_L1);
+			_silverString += std::to_string(SILVER_L1);
+			_bronzeString += std::to_string(BRONZE_L1);
+		} else if (_currentLevel == 2) {
+			_goldString += std::to_string(GOLD_L2);
+			_silverString += std::to_string(SILVER_L2);
+			_bronzeString += std::to_string(BRONZE_L2);
+		} else {
+			_goldString += std::to_string(GOLD_L3);
+			_silverString += std::to_string(SILVER_L3);
+			_bronzeString += std::to_string(BRONZE_L3);
+		}
+
+		_goldText.setString(_goldString);
+		_goldText.setFont(_shotFont);
+		_goldText.setCharacterSize(32);
+		_goldText.setPosition(200, 20);
+
+		_silverText.setString(_silverString);
+		_silverText.setFont(_shotFont);
+		_silverText.setCharacterSize(32);
+		_silverText.setPosition(400, 20);
+
+		_bronzeText.setString(_bronzeString);
+		_bronzeText.setFont(_shotFont);
+		_bronzeText.setCharacterSize(32);
+		_bronzeText.setPosition(600, 20);
+
+
+		
 	}
 
 	void GameState::HandleInput()
@@ -77,6 +118,8 @@ namespace Fish
 					arrow->_arrowState = SHOT;
 					ball->_ballState = BALL_STATE_MOVING;
 					powerBarSpeed = powerBar->GetSpeed();
+					// sets the power bar needed to false to stop the animation occurring 
+					powerBar->powerBarNeeded = false;
 					// allows us to do the bouncing calculation easily 
 					sf::Vector2f powerBarVelocity (powerBarSpeed, powerBarSpeed);
 					powerBarSpeeds = powerBarVelocity;
@@ -243,53 +286,61 @@ namespace Fish
 
 
 		if (ball->_ballState == BALL_STATE_STOPPED) {
-			
+			_shots++;
 			// must be ball then target for sprites to work for collision
 			// the following sets the players best medal out of their 3 tries
 			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetGoldSprite(), 
 				targets->GoldRadius(), ball->getBallRadius())) {
 				std::cout << "gold medal" << std::endl;
-				_medalTier = 3;
-				// straight to the next level if gold medal is achieved first or second try
-				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel)), true);
+				_medalTier = 1;
+				// straight to the next level if gold medal is achieved
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel,_shots,_shotFont)), true);
 			}
 			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite(),
 				targets->SilverRadius(), ball->getBallRadius())) {
 				std::cout << "silver medal" << std::endl;
-				if (_medalTier < 2) {
-					_medalTier = 2;
-				}
+				_medalTier = 2;
+				// straight to the next level if silver medal is achieved
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel,_shots,_shotFont)), true);
 			}
 			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetBronzeSprite(),
 				targets->BronzeRadius(), ball->getBallRadius())) {
 				std::cout << "bronze medal" << std::endl;
-				if (_medalTier < 1) {
-					_medalTier = 1;
-				}
+					_medalTier = 3;
+				// straight to the next level if bronze medal is achieved
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel,_shots, _shotFont)), true);
 			}
 			else {
 				if (collision.CheckBoundAreaAndBallCollision(ball->GetSprite(), sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))) {
-					std::cout << "missed" << std::endl;
+					std::cout << _shots << std::endl;
+					arrow->_arrowState = ROTATING;
+					arrow->MoveToBall(ball->GetSprite());
+					ball->_ballState = BALL_STATE_STILL;
+					// sets the power bar needed to true to stop the animation occurring 
+					powerBar->powerBarNeeded = true;
+					firstClick = true;
+					ball->_slowdown = 1.0;
+					// call a function for power bar and aim to work again 
+
 				}
 				else {
 					std::cout << "out of bounds" << std::endl;
+					// resets the screen when the ball goes out of bounds  
+					firstClick = true;
+					ball->_ballState = BALL_STATE_STILL;
+					_shots = 0;
+					Init();
 				}
 			}
-
-			// makes the player have one less attempt as they have just used one
-			_attempts--;
 			
-			// when all attempts have been used up go to the medal screen 
-			if (_attempts == 0) {
-				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel)), true);
-			}
-			else {
-				// resets the screen for future attempts 
-				firstClick = true;
-				ball->_ballState = BALL_STATE_STILL;
-				Init();
-			}
 		}
+
+		_shotsHad = "Shot " + std::to_string(_shots);
+		_textShots.setString(_shotsHad);
+		_textShots.setFont(_shotFont);
+		_textShots.setCharacterSize(32);
+		_textShots.setPosition(20, 20);
+
 
 	}
 
@@ -415,6 +466,10 @@ namespace Fish
 		springboard->Draw();
 		door->Draw();
 		this->_data->window.draw(this->_homeButton);
+		this->_data->window.draw(this->_goldText);
+		this->_data->window.draw(this->_silverText);
+		this->_data->window.draw(this->_bronzeText);
+		this->_data->window.draw(this->_textShots);
 
 		this->_data->window.display();
 	}

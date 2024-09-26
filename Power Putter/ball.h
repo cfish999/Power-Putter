@@ -24,6 +24,7 @@ namespace Fish {
 		float getBallRadius();
 
 		int _ballState;
+		float _slowdown = 1.0;
 
 	private:
 
@@ -37,7 +38,6 @@ namespace Fish {
 		sf::Vector2f speeds;
 
 		float _rotation;
-		float _slowdown = 1.0;
 		float _ballRadius;
 
 		int speedX;

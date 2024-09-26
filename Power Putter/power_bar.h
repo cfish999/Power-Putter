@@ -18,6 +18,7 @@ namespace Fish {
 		void Animate(float dt);
 		float GetSpeed();
 		const sf::Sprite& GetSprite() const;
+		bool powerBarNeeded = true;
 
 	private:
 
@@ -28,7 +29,6 @@ namespace Fish {
 
 		unsigned int _animationIterator;
 		bool rising = true;
-		bool powerBarNeeded = true;
 		int posY = 0;
 		int posX = 0;
 

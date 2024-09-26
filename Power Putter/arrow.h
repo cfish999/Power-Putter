@@ -16,6 +16,7 @@ namespace Fish {
 		void SpawnArrow(int x, int y, float scaleX, float scaleY);
 		void Draw();
 		void Update(float dt); 
+		void MoveToBall(sf::Sprite ball);
 		const sf::Sprite& GetSprite() const;
 		float GetArrowAngle(sf::RenderWindow& window);
 

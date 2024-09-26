@@ -9,7 +9,7 @@ namespace Fish
 	class medalScreen : public State
 	{
 	public:
-		medalScreen(GameDataRef data, int medalLevel, int lastLevelPlayed);
+		medalScreen(GameDataRef data, int medalLevel, int lastLevelPlayed, int shots, sf::Font font);
 
 		void Init();
 
@@ -21,12 +21,17 @@ namespace Fish
 		GameDataRef _data;
 
 		sf::Sprite _background;
-		sf::Sprite _gameOverTitle;
 		sf::Sprite _homeButton;
 		sf::Sprite _retry;
+		sf::Sprite _medal;
+		sf::Sprite _nextLevel;
 
 		int _medalLevel;
 		int _lastLevelPlayed;
+		int _shotsTaken = 0;
+		sf::Font _font;
+		sf::Text _shotsText;
+		std::string _text;
 
 	};
 }

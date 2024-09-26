@@ -59,6 +59,11 @@ namespace Fish {
 		
 	}
 
+	void Arrow::MoveToBall(sf::Sprite ball)
+	{
+		_arrowSprite.setPosition(ball.getPosition().x, ball.getPosition().y);
+	}
+
 	const sf::Sprite& Arrow::GetSprite() const
 	{
 		return _arrowSprite;

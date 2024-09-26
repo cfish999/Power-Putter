@@ -5,7 +5,7 @@
 
 #define PI 3.14
 
-// menu screen buttons
+// menu screen stuff
 #define MAIN_MENU_BACKGROUND "texture/game_background.png"
 #define LEVEL_SELECT "texture/level_select.png"
 #define PLAY_BUTTON "texture/play_button.png"
@@ -16,6 +16,8 @@
 #define LEVEL2 "texture/level2.png"
 #define LEVEL3 "texture/level3.png"
 #define SELECT_LEVEL "texture/select_level.png"
+#define GOLD_STAR "texture/gold_star.png"
+#define NEXT_LEVEL "texture/nextLevel.png"
 
 // ball class
 #define BALL_FRAME_FILEPATH "texture/ball_up.png"
@@ -90,3 +92,14 @@
 // door opens and closes every 4 seconds
 #define DOOR_TIMER 4.0f
 #define DOOR_ANIMATION 0.3f
+
+// level medal shots 
+#define GOLD_L1 2
+#define GOLD_L2 3
+#define GOLD_L3 1
+#define SILVER_L1 5
+#define SILVER_L2 7
+#define SILVER_L3 4
+#define BRONZE_L1 9
+#define BRONZE_L2 11
+#define BRONZE_L3 13

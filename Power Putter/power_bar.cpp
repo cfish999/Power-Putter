@@ -77,8 +77,7 @@ namespace Fish {
 
 	float PowerBar::GetSpeed()
 	{
-		// sets the power bar needed to false to stop the animation occurring 
-		powerBarNeeded = false;
+
 		float differential = rand() % 100;
 		// prevents division by 0 errors
 		float addition = (differential+1) / 100;

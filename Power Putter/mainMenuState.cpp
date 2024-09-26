@@ -39,6 +39,7 @@ namespace Fish
 			(SCREEN_HEIGHT / 1.5) - (_levelSelect.getGlobalBounds().height / 2));
 		_gameTitle.setPosition((SCREEN_WIDTH / 2) - (_levelSelect.getGlobalBounds().width / 2),
 			(SCREEN_HEIGHT / 8) - (_levelSelect.getGlobalBounds().height / 2));
+
 	}
 
 	void MainMenuState::HandleInput()
