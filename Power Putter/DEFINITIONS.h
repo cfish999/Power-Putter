@@ -17,7 +17,12 @@
 #define LEVEL3 "texture/level3.png"
 #define SELECT_LEVEL "texture/select_level.png"
 #define GOLD_STAR "texture/gold_star.png"
-#define NEXT_LEVEL "texture/nextLevel.png"
+#define SILVER_STAR "texture/silver_star.png"
+#define BRONZE_STAR "texture/bronze_star.png"
+#define NEXT_LEVEL "texture/next_level.png"
+#define COMPLETED "texture/completed.png"
+#define STATISTICS "texture/statistics.png"
+#define STATISTICS_GOLD "texture/gold_stats.png"
 
 // ball class
 #define BALL_FRAME_FILEPATH "texture/ball_up.png"

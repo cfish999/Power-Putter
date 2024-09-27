@@ -406,7 +406,7 @@ namespace Fish
 			windDirections = wind->GetDirections();
 
 			// spawns a springs
-			springboard->SpawnSpringboard(352, 768, 5.408, 3.7647, 90); // right
+			springboard->SpawnSpringboard(320, 768, 5.408, 3.7647, 90); // right
 
 			springboardSprites = springboard->GetSprites();
 			springboardDirections = springboard->GetDirections();
