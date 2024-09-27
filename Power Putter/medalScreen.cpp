@@ -39,13 +39,24 @@ namespace Fish
 		else if (_medalLevel == 2) {
 			this->_data->assets.LoadTexture("Silver Star", SILVER_STAR);
 			_medal.setTexture(this->_data->assets.GetTexture("Silver Star"));
+			// next medal (gold)
+			this->_data->assets.LoadTexture("Gold Star", GOLD_STAR);
+			_nextMedal.setTexture(this->_data->assets.GetTexture("Gold Star"));
 		}
 		else if (_medalLevel == 3) {
 			this->_data->assets.LoadTexture("Bronze Star", BRONZE_STAR);
 			_medal.setTexture(this->_data->assets.GetTexture("Bronze Star"));
+			// next medal (silver)
+			this->_data->assets.LoadTexture("Silver Star", SILVER_STAR);
+			_nextMedal.setTexture(this->_data->assets.GetTexture("Silver Star"));
+			
 		}
 		else {
-			// do nothing
+			this->_data->assets.LoadTexture("Sad Star", SAD_STAR);
+			_medal.setTexture(this->_data->assets.GetTexture("Sad Star"));
+			// next medal (silver)
+			this->_data->assets.LoadTexture("Bronze Star", BRONZE_STAR);
+			_nextMedal.setTexture(this->_data->assets.GetTexture("Bronze Star"));
 		}
 
 		if (_homeButton.getScale().x != 3) {
@@ -53,6 +64,7 @@ namespace Fish
 			_retry.scale(3, 3);
 			_statistics.scale(2, 2);
 			_medal.scale(3, 3);
+			_nextMedal.scale(3, 3);
 		}
 
 
@@ -60,6 +72,7 @@ namespace Fish
 		_retry.setPosition(794, 64);
 		_statistics.setPosition(312, 312);
 		_medal.setPosition(560, 460);
+		_nextMedal.setPosition(560, 560);
 
 		// calculating the score
 		_text = "";
@@ -126,6 +139,7 @@ namespace Fish
 		this->_data->window.draw(this->_completed);
 		this->_data->window.draw(this->_statistics);
 		this->_data->window.draw(this->_medal);
+		this->_data->window.draw(this->_nextMedal);
 		this->_data->window.draw(this->_shotsText);
 
 		this->_data->window.display();

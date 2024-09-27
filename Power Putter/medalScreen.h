@@ -24,6 +24,7 @@ namespace Fish
 		sf::Sprite _homeButton;
 		sf::Sprite _retry;
 		sf::Sprite _medal;
+		sf::Sprite _nextMedal;
 		sf::Sprite _nextLevel;
 		sf::Sprite _completed;
 		sf::Sprite _statistics;

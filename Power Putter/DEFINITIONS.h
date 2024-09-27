@@ -19,6 +19,7 @@
 #define GOLD_STAR "texture/gold_star.png"
 #define SILVER_STAR "texture/silver_star.png"
 #define BRONZE_STAR "texture/bronze_star.png"
+#define SAD_STAR "texture/sad_star.png"
 #define NEXT_LEVEL "texture/next_level.png"
 #define COMPLETED "texture/completed.png"
 #define STATISTICS "texture/statistics.png"
@@ -52,9 +53,7 @@
 #define POWER_BAR_DURATION 1.0f
 
 // target class
-#define GOLD_TARGET "texture/gold.png"
-#define SILVER_TARGET "texture/silver.png"
-#define BRONZE_TARGET "texture/bronze.png"
+#define TARGET "texture/target.png"
 
 // game over screen
 #define GAME_OVER_TITLE "texture/game_over_title.png"

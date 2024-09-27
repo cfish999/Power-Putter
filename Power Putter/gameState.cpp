@@ -287,28 +287,56 @@ namespace Fish
 
 		if (ball->_ballState == BALL_STATE_STOPPED) {
 			_shots++;
-			// must be ball then target for sprites to work for collision
-			// the following sets the players best medal out of their 3 tries
-			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetGoldSprite(), 
-				targets->GoldRadius(), ball->getBallRadius())) {
-				std::cout << "gold medal" << std::endl;
-				_medalTier = 1;
-				// straight to the next level if gold medal is achieved
+			// checks if the ball has landed on the target
+			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetTargetSprite(), 
+				targets->TargetRadius(), ball->getBallRadius())) {
+				if (_currentLevel == 1) {
+					if (_shots <= GOLD_L1) {
+						_medalTier = 1;
+					}
+					else if (_shots <= SILVER_L1) {
+						_medalTier = 2;
+					}
+					else if (_shots <= BRONZE_L1) {
+						_medalTier = 3;
+					}
+					else {
+						_medalTier = 0;
+					}
+				}
+				else if (_currentLevel == 2) {
+					if (_shots <= GOLD_L2) {
+						_medalTier = 1;
+					}
+					else if (_shots <= SILVER_L2) {
+						_medalTier = 2;
+					}
+					else if (_shots <= BRONZE_L2) {
+						_medalTier = 3;
+					}
+					else {
+						_medalTier = 0;
+					}
+				}
+				else if(_currentLevel == 3) {
+					if (_shots <= GOLD_L3) {
+						_medalTier = 1;
+					}
+					else if (_shots <= SILVER_L3) {
+						_medalTier = 2;
+					}
+					else if (_shots <= BRONZE_L3) {
+						_medalTier = 3;
+					}
+					else {
+						_medalTier = 0;
+					}
+				}
+				else {
+					std::cerr << "Error Occurred" << std::endl;
+				}
+				// sends the player to the medal screen 
 				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel,_shots,_shotFont)), true);
-			}
-			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetSilverSprite(),
-				targets->SilverRadius(), ball->getBallRadius())) {
-				std::cout << "silver medal" << std::endl;
-				_medalTier = 2;
-				// straight to the next level if silver medal is achieved
-				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel,_shots,_shotFont)), true);
-			}
-			else if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetBronzeSprite(),
-				targets->BronzeRadius(), ball->getBallRadius())) {
-				std::cout << "bronze medal" << std::endl;
-					_medalTier = 3;
-				// straight to the next level if bronze medal is achieved
-				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel,_shots, _shotFont)), true);
 			}
 			else {
 				if (collision.CheckBoundAreaAndBallCollision(ball->GetSprite(), sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))) {
@@ -488,9 +516,7 @@ namespace Fish
 		this->_data->assets.LoadTexture("Power Bar 8", POWER_BAR_FRAME8);
 		this->_data->assets.LoadTexture("Power Bar 9", POWER_BAR_FRAME9);
 		this->_data->assets.LoadTexture("Power Bar 10", POWER_BAR_FRAME10);
-		this->_data->assets.LoadTexture("Gold Target", GOLD_TARGET);
-		this->_data->assets.LoadTexture("Silver Target", SILVER_TARGET);
-		this->_data->assets.LoadTexture("Bronze Target", BRONZE_TARGET);
+		this->_data->assets.LoadTexture("Target", TARGET);
 		this->_data->assets.LoadTexture("Wall Main", WALL_MAIN);
 		this->_data->assets.LoadTexture("Wall Danger", WALL_DANGER);
 		this->_data->assets.LoadTexture("Fan Frame 1", FAN_1);

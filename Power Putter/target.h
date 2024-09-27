@@ -15,23 +15,15 @@ namespace Fish {
 
 		void SpawnTarget(int x, int y, float scaleX, float scaleY);
 		void Draw();
-		const sf::Sprite& GetBronzeSprite() const;
-		const sf::Sprite& GetSilverSprite() const;
-		const sf::Sprite& GetGoldSprite() const;
-		float BronzeRadius();
-		float SilverRadius();
-		float GoldRadius();
+		const sf::Sprite& GetTargetSprite() const;
+		float TargetRadius();
 
 	private:
 
 		GameDataRef _data;
 
-		sf::Sprite _goldTarget;
-		sf::Sprite _silverTarget;
-		sf::Sprite _bronzeTarget;
+		sf::Sprite _target;
 
-		float goldRadius;
-		float silverRadius;
-		float bronzeRadius;
+		float targetRadius;
 	};
 }
