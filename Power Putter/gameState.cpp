@@ -40,11 +40,11 @@ namespace Fish
 		this->_data->assets.LoadTexture("Home Button", HOME_BUTTON);
 		// set the texture
 		_homeButton.setTexture(this->_data->assets.GetTexture("Home Button"));
-		_homeButton.setPosition(64,64);
+		_homeButton.setPosition(864,32);
 
 		// stops the home button enlarging after every attempt 
-		if (_homeButton.getScale().x != 3) {
-			_homeButton.scale(3, 3);
+		if (_homeButton.getScale().x != 2) {
+			_homeButton.scale(2, 2);
 		}
 
 		if (!_shotFont.loadFromFile("fonts/Midnight.otf")) {
@@ -391,11 +391,7 @@ namespace Fish
 	void GameState::SetPositionOfComponents(int levelSelect)
 	{
 
-		ball->SpawnBall(64, 512, 0.615, 0.667);
-		arrow->SpawnArrow(64, 512, 1.5, 1.5);
-		targets->SpawnTarget(896, 384, 1.5, 1.5);
-		powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
-
+	
 		// level 1
 		if (levelSelect == 1) {
 
@@ -452,29 +448,155 @@ namespace Fish
 			fan->SpawnFan(832, 960, 2.56, 2.56, 0); // up
 			fan->SpawnFan(960, 960, 2.56, 2.56, 0); // up
 
+			fanSprites = fan->GetSprites();
+			fanDirections = fan->GetDirections();
+
+			ball->SpawnBall(64, 512, 0.615, 0.667);
+			arrow->SpawnArrow(64, 512, 1.5, 0.5);
+			targets->SpawnTarget(896, 384, 1.5, 1.5);
+			powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
+		}
+		else if(levelSelect == 2) {
+
+			// 1st row
+			for (int i = 2; i < 7; i++) {
+				squareObstacles->SpawnSquare(64 + 128 * i, 64, 1, 1, 1);
+			}
+			// 2nd row 
+			squareObstacles->SpawnSquare(576, 192, 1, 1, 1);
+			squareObstacles->SpawnSquare(832, 192, 1, 1, 2);
+			// 3rd row
+			squareObstacles->SpawnSquare(224, 336, 0.5, 1, 1);
+			squareObstacles->SpawnSquare(832, 320, 1, 1, 1);
+			// 4th row 
+			squareObstacles->SpawnSquare(224, 448, 0.5, 1, 1);
+			squareObstacles->SpawnSquare(320, 448, 1, 1, 2);
+			squareObstacles->SpawnSquare(832, 448, 1, 1, 1);
+			// 5th row
+			squareObstacles->SpawnSquare(320, 576 ,1, 1, 1);
+			squareObstacles->SpawnSquare(576, 576, 1, 1, 1);
+			// 6th row
+			squareObstacles->SpawnSquare(320, 704, 1, 1, 1);
+			squareObstacles->SpawnSquare(576, 704, 1, 1, 1);
+			// 7th row
+			squareObstacles->SpawnSquare(576, 832, 1, 1, 2);
+			// 8th row
+			squareObstacles->SpawnSquare(64, 960, 1, 1, 1);
+			squareObstacles->SpawnSquare(192, 960, 1, 1, 2);
+			squareObstacles->SpawnSquare(320, 960, 1, 1, 1);
+			for (int i = 4; i < 7; i++) {
+				squareObstacles->SpawnSquare(64 + 128 * i, 960, 1, 1, 1);
+			}
+
+			// stores a vector of sprites that are squares
+			squareSprites = squareObstacles->GetSprites();
+
+			// spawns 2 fans
+			fan->SpawnFan(64, 832, 2.56, 2.56, 180); // right
+			fan->SpawnFan(704, 192, 2.56, 2.56, 90); // down
 
 			fanSprites = fan->GetSprites();
 			fanDirections = fan->GetDirections();
-		}
-		else if(levelSelect == 2) {
-			// 1st row
-			for (int i = 2; i < 6; i++) {
-				squareObstacles->SpawnSquare(64 + 128 * i, 64, 1, 1, 1);
-			}
-		}
-		else if (levelSelect == 3) {
 
-			// spawns  3 winds each covering 3 tiles vertically, 1 horizontally
-			wind->SpawnWind(448, 448, 1.28, 3.84, 180);
-			wind->SpawnWind(832, 704, 1.28, 3.84, 0);
-			wind->SpawnWind(960, 704, 1.28, 3.84, 0);
+			// spawns 2 winds
+			wind->SpawnWind(192, 832, 2.56,1.28, 90);
+			wind->SpawnWind(704, 384, 2.56,2.56, 180);
 
 			windSprites = wind->GetSprites();
 			windDirections = wind->GetDirections();
+
+			//spawns a door
+			door->spawnDoor(576, 384, 6.24, 3.368, 90); // right
+
+			doorSprites = door->GetSprites();
+			rightDoorSprites = door->GetRightOpenDoors();
+			leftDoorSprites = door->GetLeftOpenDoors();
+			doorDirections = door->GetDirections();
+
+			// spawns 2 springs
+			springboard->SpawnSpringboard(448, 928, 2.704, 5.565, 0); // up
+			springboard->SpawnSpringboard(960, 928, 2.704, 5.565, 0); // up
+
+			springboardSprites = springboard->GetSprites();
+			springboardDirections = springboard->GetDirections();
+
+
+		}
+		else if (levelSelect == 3) {
+
+			// 1st row
+			squareObstacles->SpawnSquare(704, 64, 1, 1, 1);
+			squareObstacles->SpawnSquare(832, 64, 1, 1, 1);
+
+			// 2nd row 
+			squareObstacles->SpawnSquare(320, 224, 1, 0.5, 1);
+			squareObstacles->SpawnSquare(576, 192, 1, 1, 1);
+			squareObstacles->SpawnSquare(832, 192, 1, 1, 1);
+			// 3rd row
+			squareObstacles->SpawnSquare(320, 320, 1, 1, 1);
+			squareObstacles->SpawnSquare(832, 320, 1, 1, 1);
+			// 4th row 
+			squareObstacles->SpawnSquare(320, 448, 1, 1, 1);
+			squareObstacles->SpawnSquare(832, 448, 1, 1, 2);
+			// 5th row
+			squareObstacles->SpawnSquare(320, 576, 1, 1, 1);
+			squareObstacles->SpawnSquare(576, 576, 1, 1, 1);
+			// 6th row
+			squareObstacles->SpawnSquare(320, 704, 1, 1, 2);
+			squareObstacles->SpawnSquare(576, 704, 1, 1, 1);
+			// 7th row
+			squareObstacles->SpawnSquare(64, 832, 1, 1, 1);
+			squareObstacles->SpawnSquare(576, 832, 1, 1, 1);
+			squareObstacles->SpawnSquare(832, 832, 1, 1, 1);
+			// 8th row
+			for (int i = 0; i < 3; i++) {
+				squareObstacles->SpawnSquare(64 + 128 * i, 960, 1, 1, 1);
+			}
+			squareObstacles->SpawnSquare(576, 960, 1, 1, 2);
+			squareObstacles->SpawnSquare(832, 960, 1, 1, 1);
+
+			// stores a vector of sprites that are squares
+			squareSprites = squareObstacles->GetSprites();
+
+			// spawns 2 fans
+			fan->SpawnFan(64, 64, 2.56, 2.56, 180); // right
+			fan->SpawnFan(704, 192, 2.56, 2.56, 90); // down
+
+			fanSprites = fan->GetSprites();
+			fanDirections = fan->GetDirections();
+
+			// spawns 2 winds
+			wind->SpawnWind(256, 64, 2.56, 2.56, 90);
+			wind->SpawnWind(704, 384, 2.56, 2.56, 180);
+
+			windSprites = wind->GetSprites();
+			windDirections = wind->GetDirections();
+
+			//spawns 2 doors
+			door->spawnDoor(576, 384, 6.24, 3.368, 90); // right
+			door->spawnDoor(832, 640, 6.24, 3.368, 90); // right
+
+			doorSprites = door->GetSprites();
+			rightDoorSprites = door->GetRightOpenDoors();
+			leftDoorSprites = door->GetLeftOpenDoors();
+			doorDirections = door->GetDirections();
+
+			// spawns a spring
+			springboard->SpawnSpringboard(448, 928, 2.704, 5.565, 0); // up
+
+			springboardSprites = springboard->GetSprites();
+			springboardDirections = springboard->GetDirections();
+
+			ball->SpawnBall(64, 512, 0.32, 0.32);
+			arrow->SpawnArrow(64, 512, 1, 1);
+			targets->SpawnTarget(960, 256, 1.25, 1.25);
+			powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
+			
 		}
 		else {
 			std::cout << "No More Levels!" << std::endl;
 		}
+
 
 	}
 
@@ -484,15 +606,15 @@ namespace Fish
 		this->_data->window.clear(sf::Color::Red);
 
 		this->_data->window.draw(this->_background);
-		targets->Draw();
-		arrow->Draw();
-		ball->Draw();
-		powerBar->Draw();
 		squareObstacles->DrawSquares();
 		fan->Draw();
 		wind->Draw();
 		springboard->Draw();
 		door->Draw();
+		targets->Draw();
+		arrow->Draw();
+		ball->Draw();
+		powerBar->Draw();
 		this->_data->window.draw(this->_homeButton);
 		this->_data->window.draw(this->_goldText);
 		this->_data->window.draw(this->_silverText);

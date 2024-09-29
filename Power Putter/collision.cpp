@@ -66,8 +66,11 @@ namespace Fish {
 	bool Collision::CheckBallAndWindCollision(sf::Sprite sprite1, sf::Sprite sprite2)
 	{
 
+		sprite2.scale(0.6, 0.6);
 		sf::Rect<float> rect1 = sprite1.getGlobalBounds();
 		sf::Rect<float> rect2 = sprite2.getGlobalBounds();
+
+
 
 		// if it collides
 		if (rect1.intersects(rect2)) {

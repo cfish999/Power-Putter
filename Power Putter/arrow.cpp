@@ -43,14 +43,7 @@ namespace Fish {
 			_rotation += _rotatingValue * dt;
 
 			// only want to spin 90 degrees each way 
-			if (_rotation > 90.0f) {
-
-				_rotatingValue *= -1;
-			}
-			else if (_rotation < -90.0f) {
-
-				_rotatingValue *= -1;
-			}
+			
 
 			_arrowSprite.setRotation(_rotation);
 		}		
