@@ -5,7 +5,7 @@
 
 #define PI 3.14
 
-// menu screen stuff
+// menu screen definitions
 #define MAIN_MENU_BACKGROUND "texture/game_background.png"
 #define LEVEL_SELECT "texture/level_select.png"
 #define PLAY_BUTTON "texture/play_button.png"
@@ -50,7 +50,6 @@
 #define POWER_BAR_FRAME8 "texture/power_bar8.png"
 #define POWER_BAR_FRAME9 "texture/power_bar9.png"
 #define POWER_BAR_FRAME10 "texture/power_bar10.png"
-
 #define POWER_BAR_DURATION 1.0f
 
 // target class

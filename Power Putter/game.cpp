@@ -26,10 +26,10 @@ namespace Fish
 		float currentTime = this->_clock.getElapsedTime().asSeconds();
 		float accumulator = 0.0f;
 
-		// while the window is opene (program is running)
+		// while the window is opened (program is running)
 		while (this->_data->window.isOpen())
 		{
-			// process state changes all the time
+			// processes state changes which happen all the time
 			this->_data->machine.ProcessStateChanges();
 
 			// calculate time to keep frame rates consistent and keep everything running smoothly 

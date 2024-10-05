@@ -7,6 +7,7 @@ namespace Fish {
 
 	Ball::Ball(GameDataRef data) : _data(data) {
 
+		// loads the ball texture
 		_ballSprite.setTexture(this->_data->assets.GetTexture("Ball Sprite"));
 
 	}
@@ -14,15 +15,16 @@ namespace Fish {
 	void Ball::SpawnBall(int x, int y, float scaleX, float scaleY)
 	{
 		
-		// starting position of ball
+		// starting position of the ball
 		_ballSprite.setPosition(x, y);
 
-		// rotates around the centre of the object which is this 
+		// rotates around the centre of the ball
 		sf::Vector2f origin = sf::Vector2f(_ballSprite.getGlobalBounds().width / 2, _ballSprite.getGlobalBounds().height / 2);
 		_ballSprite.setOrigin(origin);
 
 		_ballSprite.scale(scaleX, scaleY);
 
+		// used for collision
 		_ballRadius = (_ballSprite.getGlobalBounds().width * scaleX) / 2;
 
 		_ballState = BALL_STATE_STILL;
@@ -32,17 +34,18 @@ namespace Fish {
 
 	void Ball::Draw() {
 
+		// draws the ball
 		_data->window.draw(_ballSprite);
 	}
 
 	void Ball::Update(float dt) 
 	{
 
+		// ensures the ball rotates to give the effect of moving when shot 
 		if (BALL_STATE_MOVING == _ballState) {
 
 			// rotates right
 			_rotation += ROTATION_SPEED * dt;
-
 
 			_ballSprite.setRotation(_rotation);
 		}
@@ -65,7 +68,6 @@ namespace Fish {
 
 		}
 		
-
 		// when the ball has stopped moving set the state to stopped
 		if (_slowdown < 0.0) {
 			if (_ballState != BALL_STATE_STILL) {
@@ -109,9 +111,8 @@ namespace Fish {
 		// calculation to work out the directions it moves
 		float radians = 2 * PI * (angle / 360);
 
-		// springboard greatly slows it down 
+		// springboard greatly slows it down when collided and not sprung
 		_slowdown -= 0.2;
-		std::cout << _slowdown << std::endl;
 
 		_ballSprite.move(speed.x * cos(radians) *_slowdown, speed.y * sin(radians) *_slowdown);
 

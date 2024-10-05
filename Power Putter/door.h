@@ -16,6 +16,7 @@ namespace Fish {
 		void spawnDoor(int x, int y, float scaleX, float scaleY, int rotation);
 		void Draw();
 		void Animate(float dt);
+		void RightAndLeftDoorInstantiation(int x, int y, float scaleX, float scaleY,int rotation);
 		const std::vector<sf::Sprite>& GetSprites() const;
 		const std::vector<sf::Sprite>& GetRightOpenDoors() const;
 		const std::vector<sf::Sprite>& GetLeftOpenDoors() const;
@@ -41,6 +42,5 @@ namespace Fish {
 
 		sf::Clock _clock;
 		sf::Clock _doorOpeningClock;
-
 	};
 }

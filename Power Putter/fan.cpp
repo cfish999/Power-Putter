@@ -12,6 +12,7 @@ namespace Fish {
 		_animationFrames.push_back(_data->assets.GetTexture("Fan Frame 3"));
 		_animationFrames.push_back(_data->assets.GetTexture("Fan Frame 4"));
 
+		// sets the fan texture
 		_fanSprite.setTexture(_animationFrames.at(_animationIterator));
 
 	}
@@ -48,6 +49,7 @@ namespace Fish {
 	void Fan::Animate(float dt)
 	{
 	
+		// fan animation
 		if (_clock.getElapsedTime().asSeconds() > FAN_SPIN_SPEED / _animationFrames.size()) {
 
 			if (_animationIterator < _animationFrames.size() - 1) {
@@ -58,12 +60,10 @@ namespace Fish {
 				_animationIterator = 0;
 			}
 
-			// sets the current frame 
+			// sets the current fan frame 
 			for (unsigned short int i = 0; i < _fanSprites.size(); i++) {
 				_fanSprites.at(i).setTexture(_animationFrames.at(_animationIterator));
 			}
-
-
 			_clock.restart();
 		}
 	}

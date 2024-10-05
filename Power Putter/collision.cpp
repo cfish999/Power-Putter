@@ -10,7 +10,7 @@ namespace Fish {
 
 	bool Collision::CheckTargetAndBallCollision(sf::Sprite sprite1, sf::Sprite sprite2, float radiusTarget, float radiusBall) {
 		
-		// uses cirlce collision to detect hitting the target
+		// uses circle collision to detect hitting the target
 		sf::Vector2f distance(sprite1.getPosition().x - sprite2.getPosition().x, sprite1.getPosition().y - sprite2.getPosition().y);
 		float distanceSquared = (distance.x * distance.x) + (distance.y * distance.y);
 
@@ -66,13 +66,12 @@ namespace Fish {
 	bool Collision::CheckBallAndWindCollision(sf::Sprite sprite1, sf::Sprite sprite2)
 	{
 
+		// descales so the wind does not immediately blow the ball so it allos the ball to get blown more centrally
 		sprite2.scale(0.6, 0.6);
 		sf::Rect<float> rect1 = sprite1.getGlobalBounds();
 		sf::Rect<float> rect2 = sprite2.getGlobalBounds();
 
-
-
-		// if it collides
+		// collision detection
 		if (rect1.intersects(rect2)) {
 			return true;
 		}
@@ -105,7 +104,6 @@ namespace Fish {
 
 	bool Collision::CheckBallAndSpringSideCollision(sf::Sprite sprite1, sf::Sprite sprite2, int direction)
 	{
-		// checks for direction bouncing off the right (height) 
 		// using AABB for collisions 
 		sf::Vector2i delta(abs(sprite2.getPosition().x - sprite1.getPosition().x),
 			abs(sprite2.getPosition().y - sprite1.getPosition().y));
@@ -130,14 +128,13 @@ namespace Fish {
 
 		}
 
-		// doesn't spring of the x axis 
+		// doesn't spring of the x or y axis 
 		return false;
 	}
 
 	float Collision::CheckDistanceFromFan(sf::Sprite sprite1, sf::Sprite sprite2, int direction)
 	{
-		float distance = 0;
-		// ball = 1 fan = 2
+		float distance;
 		if (direction == 1) {
 			// for up it is (fan.y - ball.y)
 			distance = sprite2.getGlobalBounds().getPosition().y - sprite1.getGlobalBounds().getPosition().y;
