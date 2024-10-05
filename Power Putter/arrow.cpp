@@ -6,17 +6,17 @@ namespace Fish {
 
 	Arrow::Arrow(GameDataRef data) : _data(data) {
 
-		// set the texture
+		// sets the arrow texture
 		_arrowSprite.setTexture(this->_data->assets.GetTexture("Arrow Sprite"));
 
 	}
 
 	void Arrow::SpawnArrow(int x,int y,float scaleX, float scaleY)
 	{
-		// starting position of arrow
+		// starting position of the arrow
 		_arrowSprite.setPosition(x,y);
 
-		// rotates around the centre of the object which is this 
+		// rotates around the centre of the object which enables rotation around the ball
 		sf::Vector2f origin = sf::Vector2f(_arrowSprite.getGlobalBounds().width / 2 - 40, _arrowSprite.getGlobalBounds().height / 2 );
 		_arrowSprite.setOrigin(origin);
 
@@ -40,9 +40,8 @@ namespace Fish {
 
 		if (ROTATING == _arrowState) {
 			
+			// spins 360 degrees
 			_rotation += _rotatingValue * dt;
-
-			// only want to spin 90 degrees each way 
 			
 
 			_arrowSprite.setRotation(_rotation);
@@ -54,6 +53,7 @@ namespace Fish {
 
 	void Arrow::MoveToBall(sf::Sprite ball)
 	{
+		// sets the position of the arrow as the origin of the ball
 		_arrowSprite.setPosition(ball.getPosition().x, ball.getPosition().y);
 	}
 

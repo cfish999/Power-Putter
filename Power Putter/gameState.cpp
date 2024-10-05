@@ -22,6 +22,7 @@ namespace Fish
 		
 		LoadTextures();
 
+		// instantiates all the objects we need
 		ball = new Ball(_data);
 		arrow = new Arrow(_data);
 		powerBar = new PowerBar(_data);
@@ -32,13 +33,14 @@ namespace Fish
 		springboard = new Springboard(_data);
 		door = new Door(_data);
 
-
+		// sets the position of components based on the level 
 		SetPositionOfComponents(_currentLevel);
 
+		// sets the background texture
 		_background.setTexture(this->_data->assets.GetTexture("Main Menu Background"));
 		
+		// sets the home button texture
 		this->_data->assets.LoadTexture("Home Button", HOME_BUTTON);
-		// set the texture
 		_homeButton.setTexture(this->_data->assets.GetTexture("Home Button"));
 		_homeButton.setPosition(864,32);
 
@@ -47,43 +49,12 @@ namespace Fish
 			_homeButton.scale(2, 2);
 		}
 
-		if (!_shotFont.loadFromFile("fonts/Midnight.otf")) {
-			std::cerr << "Could  not load font" << std::endl;
-			exit(-1);
-		}
+		// loads the game font
+		this->_data->assets.LoadFont("Game Font", GAME_FONT);
+		// stores the game font in _shotFont
+		_shotFont = (this->_data->assets.GetFont("Game Font"));
 
-		// Showcasing the requirements for the stars
-		_goldString = "Gold Star: ";
-		_silverString = "Silver Star: ";
-		_bronzeString = "Bronze Star: ";
-		if (_currentLevel == 1) {
-			_goldString += std::to_string(GOLD_L1);
-			_silverString += std::to_string(SILVER_L1);
-			_bronzeString += std::to_string(BRONZE_L1);
-		} else if (_currentLevel == 2) {
-			_goldString += std::to_string(GOLD_L2);
-			_silverString += std::to_string(SILVER_L2);
-			_bronzeString += std::to_string(BRONZE_L2);
-		} else {
-			_goldString += std::to_string(GOLD_L3);
-			_silverString += std::to_string(SILVER_L3);
-			_bronzeString += std::to_string(BRONZE_L3);
-		}
-
-		_goldText.setString(_goldString);
-		_goldText.setFont(_shotFont);
-		_goldText.setCharacterSize(32);
-		_goldText.setPosition(200, 20);
-
-		_silverText.setString(_silverString);
-		_silverText.setFont(_shotFont);
-		_silverText.setCharacterSize(32);
-		_silverText.setPosition(400, 20);
-
-		_bronzeText.setString(_bronzeString);
-		_bronzeText.setFont(_shotFont);
-		_bronzeText.setCharacterSize(32);
-		_bronzeText.setPosition(600, 20);
+		DisplayStarReqs(_currentLevel);
 
 
 		
@@ -139,237 +110,54 @@ namespace Fish
 		springboard->Animate(dt);
 		door->Animate(dt);
 
-		// moves the ball only when direction and power bar strength has been set
-		if (arrow->_arrowState == SHOT) {
+		Collisions(dt);
 
-			// check whether it bounces off the square obstacles
-			for (unsigned short int i = 0; i < squareSprites.size(); i++) {
-				// checks the ball has not collided with any of the square obstacles
-				_squareCollision = collision.CheckBallAndSquareCollision(ball->GetSprite(), squareSprites.at(i));
-
-				if (_squareCollision == 1) {
-					// bounces in y-axis
-					Movement(_squareCollision);
-				}
-				else if (_squareCollision == 2) {
-					// _squaresCollision is 2 so bounces in x-axis
-					Movement(_squareCollision);
-				}
-
-			}
-
-			for (unsigned short int i = 0; i < windSprites.size(); i++) {
-				// blows the ball in the direction the wind is blowing  
-				if (collision.CheckBallAndWindCollision(ball->GetSprite(), windSprites.at(i))) {
-
-					if (windDirections.at(i) == 0) {
-						if (powerBarSpeeds.y > 0.0) {
-							powerBarSpeeds.y *= -1;
-						}
-						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 1);
-					}
-					else if (windDirections.at(i) == 90) {
-						if (powerBarSpeeds.x < 0.0) {
-							powerBarSpeeds.x *= -1;
-						}
-						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 3);
-					}
-					else if (windDirections.at(i) == 180) {
-						if (powerBarSpeeds.y < 0.0) {
-							powerBarSpeeds.y *= -1;
-						}
-						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 2);
-					}
-					else {
-						if (powerBarSpeeds.x > 0.0) {
-							powerBarSpeeds.x *= -1;
-						}
-						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 4);
-					}
-				}
-			}
-
-			// checks for springboard collisions
-			_springSize = springboard->_animationIterator;
-
-			// medium setting so springs off
-			for (unsigned short int i = 0; i < springboardSprites.size(); i++) {
-
-				if (_springSize == 1) {
-					_springboardCollided = collision.CheckBallAndSpringSideCollision(ball->GetSprite(), springboardSprites.at(i),
-						springboardDirections.at(i));
-				}
-				// large setting so springs off
-				else if (_springSize == 2) {
-					_springboardCollided = collision.CheckBallAndSpringSideCollision(ball->GetSprite(), springboardSprites.at(i),
-						springboardDirections.at(i));
-				}
-
-				if (_springboardCollided) {
-					// bounces off whatever axis it is facing and a set speed
-					
-					// 1 = up, 2 = down, 3 = right , 4 = left
-					if (springboardDirections.at(i) == 0) {
-						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 1);
-					}
-					else if (springboardDirections.at(i) == 90) {
-						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 3);
-					}
-					else if (springboardDirections.at(i) == 180) {
-						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 2);
-					}
-					else {
-						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 4);
-					}
-				}
-				else {
-					for (unsigned short int i = 0; i < springboardSprites.size(); i++) {
-						// smallest spring setting so no bounce just reflect 
-						if (_springSize == 0) {
-							// small collision
-							_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i), 64, 192);
-
-						}
-						else if (_springSize == 1) {
-							// medium collision
-							_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i), 64, 192);
-						}
-						else {
-							_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), springboardSprites.at(i));
-						}
-						if (_dullClock.getElapsedTime().asSeconds() > SPRINGBOARD_SLOWDOWN) {
-							if (_rectangleCollision == 1) {
-								// bounces in y-axis
-								powerBarSpeeds.y *= -1;
-								ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
-								_dullClock.restart();
-							}
-							else if (_rectangleCollision == 2) {
-								// bounces in x-axis
-								powerBarSpeeds.x *= -1;
-								ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
-								_dullClock.restart();
-							}
-						}
-					}
-				}
-			}
-
-			_doorState = door->_animationIterator;
-
-			for (unsigned short int i = 0; i < doorSprites.size(); i++) {
-				if (_doorState == 0 || _doorState == 1) {
-					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), doorSprites.at(i));
-					if (_rectangleCollision > 0) {
-						Movement(_rectangleCollision);
-					}
-				}
-				else {
-					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), leftDoorSprites.at(i));
-					if (_rectangleCollision > 0) {
-						Movement(_rectangleCollision);
-					}
-
-					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), rightDoorSprites.at(i));
-
-					if (_rectangleCollision > 0) {
-						Movement(_rectangleCollision);
-					}
-				}
-			}
-			
-
-			// moves the ball in the direction it was aimed
-			ball->Move(arrowAngle, powerBarSpeeds);
-
-		}
-
-
-		if (ball->_ballState == BALL_STATE_STOPPED) {
-			_shots++;
-			// checks if the ball has landed on the target
-			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetTargetSprite(), 
-				targets->TargetRadius(), ball->getBallRadius())) {
-				if (_currentLevel == 1) {
-					if (_shots <= GOLD_L1) {
-						_medalTier = 1;
-					}
-					else if (_shots <= SILVER_L1) {
-						_medalTier = 2;
-					}
-					else if (_shots <= BRONZE_L1) {
-						_medalTier = 3;
-					}
-					else {
-						_medalTier = 0;
-					}
-				}
-				else if (_currentLevel == 2) {
-					if (_shots <= GOLD_L2) {
-						_medalTier = 1;
-					}
-					else if (_shots <= SILVER_L2) {
-						_medalTier = 2;
-					}
-					else if (_shots <= BRONZE_L2) {
-						_medalTier = 3;
-					}
-					else {
-						_medalTier = 0;
-					}
-				}
-				else if(_currentLevel == 3) {
-					if (_shots <= GOLD_L3) {
-						_medalTier = 1;
-					}
-					else if (_shots <= SILVER_L3) {
-						_medalTier = 2;
-					}
-					else if (_shots <= BRONZE_L3) {
-						_medalTier = 3;
-					}
-					else {
-						_medalTier = 0;
-					}
-				}
-				else {
-					std::cerr << "Error Occurred" << std::endl;
-				}
-				// sends the player to the medal screen 
-				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel,_shots,_shotFont)), true);
-			}
-			else {
-				if (collision.CheckBoundAreaAndBallCollision(ball->GetSprite(), sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))) {
-					std::cout << _shots << std::endl;
-					arrow->_arrowState = ROTATING;
-					arrow->MoveToBall(ball->GetSprite());
-					ball->_ballState = BALL_STATE_STILL;
-					// sets the power bar needed to true to stop the animation occurring 
-					powerBar->powerBarNeeded = true;
-					firstClick = true;
-					ball->_slowdown = 1.0;
-					// call a function for power bar and aim to work again 
-
-				}
-				else {
-					std::cout << "out of bounds" << std::endl;
-					// resets the screen when the ball goes out of bounds  
-					firstClick = true;
-					ball->_ballState = BALL_STATE_STILL;
-					_shots = 0;
-					Init();
-				}
-			}
-			
-		}
-
+		// Updates the shot counter every frame incase a shot has been taken 
 		_shotsHad = "Shot " + std::to_string(_shots);
 		_textShots.setString(_shotsHad);
 		_textShots.setFont(_shotFont);
 		_textShots.setCharacterSize(32);
 		_textShots.setPosition(20, 20);
 
+	}
 
+	void GameState::DisplayStarReqs(int level)
+	{
+		// Showcases the requirements for the stars
+		_goldString = "Gold Star: ";
+		_silverString = "Silver Star: ";
+		_bronzeString = "Bronze Star: ";
+		if (level == 1) {
+			_goldString += std::to_string(GOLD_L1);
+			_silverString += std::to_string(SILVER_L1);
+			_bronzeString += std::to_string(BRONZE_L1);
+		}
+		else if (level == 2) {
+			_goldString += std::to_string(GOLD_L2);
+			_silverString += std::to_string(SILVER_L2);
+			_bronzeString += std::to_string(BRONZE_L2);
+		}
+		else {
+			_goldString += std::to_string(GOLD_L3);
+			_silverString += std::to_string(SILVER_L3);
+			_bronzeString += std::to_string(BRONZE_L3);
+		}
+
+		// displays them at the top of the screen 
+		_goldText.setString(_goldString);
+		_goldText.setFont(_shotFont);
+		_goldText.setCharacterSize(32);
+		_goldText.setPosition(200, 20);
+
+		_silverText.setString(_silverString);
+		_silverText.setFont(_shotFont);
+		_silverText.setCharacterSize(32);
+		_silverText.setPosition(400, 20);
+
+		_bronzeText.setString(_bronzeString);
+		_bronzeText.setFont(_shotFont);
+		_bronzeText.setCharacterSize(32);
+		_bronzeText.setPosition(600, 20);
 	}
 
 	void GameState::Movement(int axisAffected)
@@ -391,7 +179,6 @@ namespace Fish
 	void GameState::SetPositionOfComponents(int levelSelect)
 	{
 
-	
 		// level 1
 		if (levelSelect == 1) {
 
@@ -451,8 +238,8 @@ namespace Fish
 			fanSprites = fan->GetSprites();
 			fanDirections = fan->GetDirections();
 
-			ball->SpawnBall(64, 512, 0.615, 0.667);
-			arrow->SpawnArrow(64, 512, 1.5, 0.5);
+			ball->SpawnBall(64, 512, 0.5, 0.5);
+			arrow->SpawnArrow(64, 512, 1, 1);
 			targets->SpawnTarget(896, 384, 1.5, 1.5);
 			powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
 		}
@@ -519,6 +306,11 @@ namespace Fish
 
 			springboardSprites = springboard->GetSprites();
 			springboardDirections = springboard->GetDirections();
+
+			ball->SpawnBall(64, 512, 0.5, 0.5);
+			arrow->SpawnArrow(64, 512, 1, 1);
+			targets->SpawnTarget(960, 256, 1.5, 1.5);
+			powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
 
 
 		}
@@ -587,9 +379,9 @@ namespace Fish
 			springboardSprites = springboard->GetSprites();
 			springboardDirections = springboard->GetDirections();
 
-			ball->SpawnBall(64, 512, 0.32, 0.32);
+			ball->SpawnBall(64, 512, 0.5, 0.5);
 			arrow->SpawnArrow(64, 512, 1, 1);
-			targets->SpawnTarget(960, 256, 1.25, 1.25);
+			targets->SpawnTarget(960, 256, 1.5, 1.5);
 			powerBar->SpawnPowerBar(192, 832, 1.8, 2.7);
 			
 		}
@@ -622,6 +414,235 @@ namespace Fish
 		this->_data->window.draw(this->_textShots);
 
 		this->_data->window.display();
+	}
+
+	void GameState::Collisions(float dt)
+	{
+		// moves the ball only when direction and power bar strength has been set
+		if (arrow->_arrowState == SHOT) {
+
+			// check whether it bounces off the square obstacles
+			for (unsigned short int i = 0; i < squareSprites.size(); i++) {
+				// checks the ball has not collided with any of the square obstacles
+				_squareCollision = collision.CheckBallAndSquareCollision(ball->GetSprite(), squareSprites.at(i));
+
+				if (_squareCollision == 1) {
+					// bounces in y-axis
+					Movement(_squareCollision);
+				}
+				else if (_squareCollision == 2) {
+					// _squaresCollision is 2 so bounces in x-axis
+					Movement(_squareCollision);
+				}
+
+			}
+
+			for (unsigned short int i = 0; i < windSprites.size(); i++) {
+				// blows the ball in the direction the wind is blowing  
+				if (collision.CheckBallAndWindCollision(ball->GetSprite(), windSprites.at(i))) {
+
+					if (windDirections.at(i) == 0) {
+						if (powerBarSpeeds.y > 0.0) {
+							powerBarSpeeds.y *= -1;
+						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 1);
+					}
+					else if (windDirections.at(i) == 90) {
+						if (powerBarSpeeds.x < 0.0) {
+							powerBarSpeeds.x *= -1;
+						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 3);
+					}
+					else if (windDirections.at(i) == 180) {
+						if (powerBarSpeeds.y < 0.0) {
+							powerBarSpeeds.y *= -1;
+						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 2);
+					}
+					else {
+						if (powerBarSpeeds.x > 0.0) {
+							powerBarSpeeds.x *= -1;
+						}
+						powerBarSpeeds = ball->MovedByWind(arrowAngle, powerBarSpeeds, 4);
+					}
+				}
+			}
+
+			// checks for springboard collisions
+			_springSize = springboard->_animationIterator;
+
+			// medium setting so springs off
+			for (unsigned short int i = 0; i < springboardSprites.size(); i++) {
+
+				if (_springSize == 1) {
+					_springboardCollided = collision.CheckBallAndSpringSideCollision(ball->GetSprite(), springboardSprites.at(i),
+						springboardDirections.at(i));
+				}
+				// large setting so springs off
+				else if (_springSize == 2) {
+					_springboardCollided = collision.CheckBallAndSpringSideCollision(ball->GetSprite(), springboardSprites.at(i),
+						springboardDirections.at(i));
+				}
+
+				if (_springboardCollided) {
+					// bounces off whatever axis it is facing and a set speed
+
+					// 1 = up, 2 = down, 3 = right , 4 = left
+					if (springboardDirections.at(i) == 0) {
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 1);
+					}
+					else if (springboardDirections.at(i) == 90) {
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 3);
+					}
+					else if (springboardDirections.at(i) == 180) {
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 2);
+					}
+					else {
+						powerBarSpeeds = ball->BouncedOffSpringboard(arrowAngle, powerBarSpeeds, 4);
+					}
+				}
+				else {
+					for (unsigned short int i = 0; i < springboardSprites.size(); i++) {
+						// smallest spring setting so no bounce just reflect 
+						if (_springSize == 0) {
+							// small collision
+							_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i), 64, 192);
+
+						}
+						else if (_springSize == 1) {
+							// medium collision
+							_rectangleCollision = collision.CheckBallAndSpringboardCollision(ball->GetSprite(), springboardSprites.at(i), 64, 192);
+						}
+						else {
+							_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), springboardSprites.at(i));
+						}
+						if (_dullClock.getElapsedTime().asSeconds() > SPRINGBOARD_SLOWDOWN) {
+							if (_rectangleCollision == 1) {
+								// bounces in y-axis
+								powerBarSpeeds.y *= -1;
+								ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
+								_dullClock.restart();
+							}
+							else if (_rectangleCollision == 2) {
+								// bounces in x-axis
+								powerBarSpeeds.x *= -1;
+								ball->CollidedWithSpringboard(arrowAngle, powerBarSpeeds);
+								_dullClock.restart();
+							}
+						}
+					}
+				}
+			}
+
+			_doorState = door->_animationIterator;
+
+			// door collisions 
+			for (unsigned short int i = 0; i < doorSprites.size(); i++) {
+				if (_doorState == 0 || _doorState == 1) {
+					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), doorSprites.at(i));
+					if (_rectangleCollision > 0) {
+						Movement(_rectangleCollision);
+					}
+				}
+				else {
+					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), leftDoorSprites.at(i));
+					if (_rectangleCollision > 0) {
+						Movement(_rectangleCollision);
+					}
+
+					_rectangleCollision = collision.CheckBallAndRectangleCollision(ball->GetSprite(), rightDoorSprites.at(i));
+
+					if (_rectangleCollision > 0) {
+						Movement(_rectangleCollision);
+					}
+				}
+			}
+
+
+			// moves the ball in the direction it was aimed
+			ball->Move(arrowAngle, powerBarSpeeds);
+
+		}
+
+
+		if (ball->_ballState == BALL_STATE_STOPPED) {
+			_shots++;
+			// checks if the ball has landed on the target
+			if (collision.CheckTargetAndBallCollision(ball->GetSprite(), targets->GetTargetSprite(),
+				targets->TargetRadius(), ball->getBallRadius())) {
+				if (_currentLevel == 1) {
+					if (_shots <= GOLD_L1) {
+						_medalTier = 1;
+					}
+					else if (_shots <= SILVER_L1) {
+						_medalTier = 2;
+					}
+					else if (_shots <= BRONZE_L1) {
+						_medalTier = 3;
+					}
+					else {
+						_medalTier = 0;
+					}
+				}
+				else if (_currentLevel == 2) {
+					if (_shots <= GOLD_L2) {
+						_medalTier = 1;
+					}
+					else if (_shots <= SILVER_L2) {
+						_medalTier = 2;
+					}
+					else if (_shots <= BRONZE_L2) {
+						_medalTier = 3;
+					}
+					else {
+						_medalTier = 0;
+					}
+				}
+				else if (_currentLevel == 3) {
+					if (_shots <= GOLD_L3) {
+						_medalTier = 1;
+					}
+					else if (_shots <= SILVER_L3) {
+						_medalTier = 2;
+					}
+					else if (_shots <= BRONZE_L3) {
+						_medalTier = 3;
+					}
+					else {
+						_medalTier = 0;
+					}
+				}
+				else {
+					std::cerr << "Error Occurred" << std::endl;
+				}
+				// sends the player to the medal screen 
+				_data->machine.AddState(StateRef(new medalScreen(_data, _medalTier, _currentLevel, _shots)), true);
+			}
+			else {
+				if (collision.CheckBoundAreaAndBallCollision(ball->GetSprite(), sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))) {
+					std::cout << _shots << std::endl;
+					arrow->_arrowState = ROTATING;
+					arrow->MoveToBall(ball->GetSprite());
+					ball->_ballState = BALL_STATE_STILL;
+					// sets the power bar needed to true to stop the animation occurring 
+					powerBar->powerBarNeeded = true;
+					firstClick = true;
+					ball->_slowdown = 1.0;
+					// call a function for power bar and aim to work again 
+
+				}
+				else {
+					std::cout << "out of bounds" << std::endl;
+					// resets the screen when the ball goes out of bounds  
+					firstClick = true;
+					ball->_ballState = BALL_STATE_STILL;
+					_shots = 0;
+					Init();
+				}
+			}
+
+		}
+
 	}
 
 	void GameState::LoadTextures()

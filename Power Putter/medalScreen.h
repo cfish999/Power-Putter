@@ -9,12 +9,15 @@ namespace Fish
 	class medalScreen : public State
 	{
 	public:
-		medalScreen(GameDataRef data, int medalLevel, int lastLevelPlayed, int shots, sf::Font font);
+		medalScreen(GameDataRef data, int medalLevel, int lastLevelPlayed, int shots);
 
 		void Init();
 
 		void HandleInput();
 		void Update(float dt);
+		void CheckNextLevel();
+		void StarGiven();
+		void PlayerShots();
 		void Draw(float dt);
 
 	private:

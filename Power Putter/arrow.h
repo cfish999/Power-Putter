@@ -28,9 +28,6 @@ namespace Fish {
 
 		sf::Sprite _arrowSprite;
 
-		sf::Clock _clock;
-		sf::Clock _movementClock;
-
 		float _rotation;
 		int _rotatingValue = 100;
 

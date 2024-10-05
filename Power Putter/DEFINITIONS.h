@@ -24,6 +24,7 @@
 #define COMPLETED "texture/completed.png"
 #define STATISTICS "texture/statistics.png"
 #define STATISTICS_GOLD "texture/gold_stats.png"
+#define GAME_FONT "fonts/Midnight.otf"
 
 // ball class
 #define BALL_FRAME_FILEPATH "texture/ball_up.png"

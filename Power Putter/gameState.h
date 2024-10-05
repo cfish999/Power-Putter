@@ -28,6 +28,9 @@ namespace Fish
 		void HandleInput();
 		void Update(float dt);
 		void Draw(float dt);
+		void Collisions(float dt);
+		void PlayerActions(float dt);
+		void DisplayStarReqs(int level);
 		void Movement(int axisAffected);
 		void SetPositionOfComponents(int levelSelect);
 		void LoadTextures();
